@@ -7,3 +7,6 @@ __pycache__/
 
 # Configs de entorno
 .env
+
+# Vídeos (muy pesados)
+recursos/
