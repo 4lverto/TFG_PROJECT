@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath('.'))
 
 import cv2
 from pose_module.pose_tracker import PoseTracker
-from core.ejercicios.bicep_curl import BicepCurl
+from core.ejercicios.factory import get_ejercicio  # 🔥 usamos la fábrica
 from core import video_paths as videos
 
 # Argumento: 1 = vídeo, 2 = cámara
@@ -21,7 +21,9 @@ else:
     sys.exit(1)
 
 pose_tracker = PoseTracker()
-contador = BicepCurl(lado='derecho')  # o 'izquierdo'
+
+# 🎯 Creamos el contador de ejercicio dinámicamente
+contador = get_ejercicio("bicep_curl", lado="derecho")
 
 while True:
     ret, frame = cap.read()
@@ -41,7 +43,7 @@ while True:
     frame = pose_tracker.dibuja_landmarks(frame, results)
     cv2.imshow("Curl Bíceps", frame)
 
-    if cv2.waitKey(20) & 0xFF == 27:
+    if cv2.waitKey(20) & 0xFF == 27:  # Esc para salir
         break
 
 cap.release()
