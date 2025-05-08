@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { iniciarSesion, estadoEjercicio, finalizarEjercicio } from "@/shared/adapters/infrastructure/api";
+import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
+
 
 export default function ManualScreen() {
   const [tipoEntrada, setTipoEntrada] = useState<"camera" | "video">("camera");
@@ -9,6 +12,7 @@ export default function ManualScreen() {
   const [mensaje, setMensaje] = useState<string>('');
   const [repeticiones, setRepeticiones] = useState<number>(0);
   const [ejercicioActivo, setEjercicioActivo] = useState<boolean>(false);
+  const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState<string>('bicep_curl')
 
   const handleTipoEntradaChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as "camera" | "video";
@@ -33,7 +37,7 @@ export default function ManualScreen() {
         fuente = URL.createObjectURL(archivoVideo);  // ⚠️ Esto solo crea URL temporal en navegador, backend necesitaría path real
       }
 
-      const response = await iniciarSesion(tipoEntrada, "bicep_curl", fuente);
+      const response = await iniciarSesion(tipoEntrada, ejercicioSeleccionado.trim(), fuente);
       console.log(response);
       setMensaje(response.mensaje);
       setEjercicioActivo(true);
@@ -104,11 +108,26 @@ export default function ManualScreen() {
               </>
             )}
 
+            <label className="text-lg font-semibold text-gray-700 mt-2">
+              Selecciona el ejercicio:
+            </label>
+            <select
+              value={ejercicioSeleccionado}
+              onChange={(e) => setEjercicioSeleccionado(e.target.value)}
+              className="p-2 rounded border border-gray-300"
+            >
+              {EJERCICIOS.map((ej) => (
+                <option key={ej.id} value={ej.id}>
+                  {ej.nombre}
+                </option>
+              ))}
+            </select>
+
             <button
               onClick={handleIniciarEjercicio}
               className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 mt-4"
             >
-              💪 Iniciar Curl de Bíceps
+              💪 Iniciar {EJERCICIOS.find(e => e.id === ejercicioSeleccionado)?.nombre}
             </button>
           </div>
         </>

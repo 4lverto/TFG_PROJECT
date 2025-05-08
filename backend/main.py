@@ -77,18 +77,13 @@ async def finalizar_ejercicio():
     if not ejercicio_actual:
         return {"error": "No hay ejercicio en curso"}
 
-    repeticiones_finales = session_manager.obtener_repeticiones()
+    '''repeticiones_finales = session_manager.obtener_repeticiones()'''
     session_manager.detener_sesion()
-
-    historial_ejercicios.append({
-        "ejercicio": ejercicio_actual,
-        "repeticiones": repeticiones_finales
-    })
-
-    mensaje = f"Ejercicio '{ejercicio_actual}' finalizado con {repeticiones_finales} repeticiones."
+    resumen = session_manager.generar_resumen()
+    
+    historial_ejercicios.append(resumen)
     ejercicio_actual = None
-
-    return {"mensaje": mensaje}
+    return {"mensaje": f"Actividad finalizada con éxito." , "resumen": resumen}
 
 @app.get("/historial")
 async def ver_historial():

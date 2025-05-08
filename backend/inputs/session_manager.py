@@ -4,12 +4,17 @@ from typing import Optional
 from inputs.base_session import BaseSession
 from inputs.camera_session import CameraSession
 from inputs.video_session import VideoSession
+from datetime import datetime
 
 class SessionManager:
     def __init__(self):
         self.session: Optional[BaseSession] = None
         self.tipo: Optional[str] = None  # "camera" o "video"
         self.fuente: Optional[str] = None
+        self.nombre_ejercicio: Optional[str] = None
+        self.start_time: Optional[datetime] = None
+        self.end_time: Optional[datetime] = None
+        
 
     def iniciar_sesion(self, tipo: str, nombre_ejercicio: str, fuente: Optional[str] = None):
         """
@@ -21,14 +26,16 @@ class SessionManager:
         if tipo == "camera":
             self.session = CameraSession()
             self.session.start(nombre_ejercicio)
-            self.tipo = "camera"
         elif tipo == "video":
             self.session = VideoSession()
             self.session.start(nombre_ejercicio, fuente)
-            self.tipo = "video"
-            self.fuente = fuente
         else:
             raise ValueError(f"Tipo de sesión desconocido: {tipo}")
+
+        self.tipo = tipo
+        self.fuente = fuente
+        self.nombre_ejercicio = nombre_ejercicio
+        self.start_time = datetime.now()
 
     def detener_sesion(self):
         """
@@ -36,9 +43,8 @@ class SessionManager:
         """
         if self.session:
             self.session.stop()
+            self.end_time = datetime.now()
             self.session = None
-            self.tipo = None
-            self.fuente = None
 
     def obtener_repeticiones(self) -> int:
         """
@@ -47,7 +53,24 @@ class SessionManager:
         if self.session:
             return self.session.get_repeticiones()
         return 0
-
+    
+    def generar_resumen(self) -> dict:
+        if not self.start_time or not self.end_time:
+            return {}
+        
+        duracion = self.end_time - self.start_time
+        reps  = self.session.get_repeticiones() if self.session else 0
+        
+        return{
+            "Ejercicio" : self.nombre_ejercicio,
+            "Tipo_entrada": self.tipo,
+            "Repeticiones": reps,
+            "Inicio": self.start_time,
+            "Final": self.end_time,
+            "Duracion segundos": int(duracion.total_seconds()),
+            "Duracion formateada": str(duracion)
+        }
+    
     def sesion_activa(self) -> bool:
         """
         Indica si hay una sesión corriendo.

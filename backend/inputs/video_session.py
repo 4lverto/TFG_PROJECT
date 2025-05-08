@@ -35,23 +35,29 @@ class VideoSession(BaseSession):
         self.thread = threading.Thread(target=self._loop, daemon=True)
         self.thread.start()
 
+
+
     def _loop(self):
         while self.running and self.cap.isOpened():
             ret, frame = self.cap.read()
             if not ret:
-                break  # Fin del vídeo
+                break
 
             results = self.pose_tracker.procesar(frame)
             puntos = self.pose_tracker.extraer_landmarks(results, frame.shape)
 
             if puntos and self.contador:
-                angulo, reps = self.contador.actualizar(puntos)
+                _, reps = self.contador.actualizar(puntos)
                 self.repeticiones = reps
 
-            # Controla la velocidad de lectura de frames (opcional)
-            # time.sleep(0.03)  # ~30 FPS
+            frame = self.pose_tracker.dibuja_landmarks(frame, results)
+            cv2.imshow("Vídeo - Seguimiento de Ejercicio", frame)
+
+            if cv2.waitKey(25) & 0xFF == 27:
+                self.running = False
 
         self._cleanup()
+
 
     def stop(self):
         self.running = False
