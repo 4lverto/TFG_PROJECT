@@ -4,6 +4,8 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { iniciarSesion, estadoEjercicio, finalizarEjercicio } from "@/shared/adapters/infrastructure/api";
 import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
+import ResumenDeSesion from "./components/ResumenDeSesion";
+import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
 
 
 export default function ManualScreen() {
@@ -13,6 +15,8 @@ export default function ManualScreen() {
   const [repeticiones, setRepeticiones] = useState<number>(0);
   const [ejercicioActivo, setEjercicioActivo] = useState<boolean>(false);
   const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState<string>('bicep_curl')
+  const [resumen, setResumen] = useState<ResumenSesion | null>(null);
+
 
   const handleTipoEntradaChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as "camera" | "video";
@@ -51,6 +55,7 @@ export default function ManualScreen() {
     try {
       const response = await finalizarEjercicio();
       setMensaje(response.mensaje);
+      setResumen(response.resumen);
       setEjercicioActivo(false);
     } catch (error) {
       console.error(error);
@@ -78,6 +83,13 @@ export default function ManualScreen() {
       <h1 className="text-3xl font-bold mb-6 text-gray-800">
         🎯 Modo Selección Manual
       </h1>
+
+      {resumen && (
+        <div className="my-8 w-full max-w-xl">
+          <ResumenDeSesion resumen={resumen} onVolver={() => setResumen(null)} />
+        </div>
+      )}
+
 
       {!ejercicioActivo ? (
         <>

@@ -77,9 +77,9 @@ async def finalizar_ejercicio():
     if not ejercicio_actual:
         return {"error": "No hay ejercicio en curso"}
 
-    '''repeticiones_finales = session_manager.obtener_repeticiones()'''
+    repeticiones_finales = session_manager.obtener_repeticiones()
     session_manager.detener_sesion()
-    resumen = session_manager.generar_resumen()
+    resumen = session_manager.generar_resumen(reps=repeticiones_finales)
     
     historial_ejercicios.append(resumen)
     ejercicio_actual = None

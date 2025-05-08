@@ -54,22 +54,22 @@ class SessionManager:
             return self.session.get_repeticiones()
         return 0
     
-    def generar_resumen(self) -> dict:
+    def generar_resumen(self, reps: int) -> dict:
         if not self.start_time or not self.end_time:
             return {}
         
         duracion = self.end_time - self.start_time
-        reps  = self.session.get_repeticiones() if self.session else 0
         
-        return{
-            "Ejercicio" : self.nombre_ejercicio,
-            "Tipo_entrada": self.tipo,
-            "Repeticiones": reps,
-            "Inicio": self.start_time,
-            "Final": self.end_time,
-            "Duracion segundos": int(duracion.total_seconds()),
-            "Duracion formateada": str(duracion)
+        return {
+            "ejercicio": self.nombre_ejercicio,
+            "tipo_entrada": self.tipo,
+            "repeticiones": reps,
+            "inicio": self.start_time.isoformat(),
+            "fin": self.end_time.isoformat(),
+            "duracion_segundos": int(duracion.total_seconds()),
+            "duracion_formateada": str(duracion),
         }
+
     
     def sesion_activa(self) -> bool:
         """
