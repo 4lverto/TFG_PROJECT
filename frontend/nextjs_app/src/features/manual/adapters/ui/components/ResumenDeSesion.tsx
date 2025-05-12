@@ -2,6 +2,7 @@
 import React from "react";
 import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
 import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
+import {GraficaAngulo} from "@/shared/adapters/ui/GraficaAngulo";
 import jsPDF from "jspdf";
 
 interface Props {
@@ -136,6 +137,10 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
         >
         📈 Exportar datos detallados (CSV)
       </button>
+
+      {resumen.detalles_frame_a_frame && resumen.detalles_frame_a_frame.length > 0 && (
+        <GraficaAngulo datos={resumen.detalles_frame_a_frame} />
+      )}
 
       <button
         onClick={onVolver}
