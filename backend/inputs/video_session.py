@@ -1,5 +1,6 @@
 # backend/inputs/video_session.py
 
+import os
 import threading
 import cv2
 from typing import Optional
@@ -23,10 +24,25 @@ class VideoSession(BaseSession):
         
         if fuente is None:
             raise ValueError("Se debe proporcionar la ruta del archivo de vídeo.")
-
+        
+        print(f"🔍 Ruta inicial: {fuente}")
+        
+        fuente = fuente.strip()  # Elimina saltos de línea, espacios
+        if not os.path.isabs(fuente):
+            fuente = os.path.abspath(os.path.join(os.getcwd(), fuente))
+        
+        print(f"📂 Ruta final a abrir: {fuente}")
+        
+        print(f"📄 Longitud ruta: {len(fuente)} → Contenido: [{fuente}]")
+        for i, c in enumerate(fuente):
+            print(f"  [{i}] = {repr(c)}")
+        
+        if not os.path.exists(fuente):
+            print("❌ El archivo de vídeo no existe en el sistema.")
+    
         self.cap = cv2.VideoCapture(fuente)
         if not self.cap.isOpened():
-            raise RuntimeError(f"No se pudo abrir el archivo de vídeo: {fuente}")
+            raise RuntimeError(f"No se pudo abrir el archivo de vídeo")
 
         self.contador = get_ejercicio(nombre_ejercicio)
 
@@ -36,11 +52,12 @@ class VideoSession(BaseSession):
         self.thread.start()
 
 
-
     def _loop(self):
         while self.running and self.cap.isOpened():
             ret, frame = self.cap.read()
             if not ret:
+                print("Fin del vídeo o error al leer")
+                self.running = False
                 break
 
             results = self.pose_tracker.procesar(frame)
@@ -51,11 +68,12 @@ class VideoSession(BaseSession):
                 self.repeticiones = reps
 
             frame = self.pose_tracker.dibuja_landmarks(frame, results)
-            cv2.imshow("Vídeo - Seguimiento de Ejercicio", frame)
+            cv2.imshow("Vídeo - Seguimiento", frame)
 
-            if cv2.waitKey(25) & 0xFF == 27:
+            if cv2.waitKey(25) & 0xFF == 27:  # ESC para salir
                 self.running = False
-
+        
+        print(f"🏁 Procesamiento de vídeo finalizado. Total repeticiones: {self.repeticiones}")
         self._cleanup()
 
 
@@ -68,7 +86,7 @@ class VideoSession(BaseSession):
     def _cleanup(self):
         if self.cap:
             self.cap.release()
-        # cv2.destroyAllWindows()
+        cv2.destroyAllWindows() # Cierra la ventana al finalizar
 
     def get_repeticiones(self) -> int:
         return self.repeticiones

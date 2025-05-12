@@ -1,34 +1,42 @@
-from pathlib import Path
+import os
+import re
 
+# 📁 Directorio base del proyecto
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
-class _VideoPath:
-    def __init__(self, path: Path):
-        self._path = path
+# 📁 Carpeta que contiene los vídeos de ejercicios
+VIDEO_ROOT = os.path.join(BASE_DIR, "recursos", "videos")
 
-    def __str__(self):
-        return str(self._path)
+# Diccionario con rutas absolutas a un vídeo por ejercicio (ejemplo)
+VIDEO_PATHS = {
+    "curl_bicep": os.path.join(VIDEO_ROOT, "curl_bicep", "curl_bicep_1.mp4"),
+    # Agrega más si tienes vídeos únicos por ejercicio
+}
 
-    def __fspath__(self):
-        return str(self._path) # Para que lo acepte también directamente cv2.VideoCapture
+# Función auxiliar para obtener la ruta a un vídeo específico
+def get_video_path(ejercicio: str) -> str:
+    path = VIDEO_PATHS.get(ejercicio)
+    if not path:
+        raise ValueError(f"Ejercicio desconocido: '{ejercicio}'")
+    return path
 
-    def path(self):
-        return self._path
+# Función para listar todos los vídeos de un ejercicio (subcarpeta)
+def listar_videos_por_ejercicio(ejercicio: str) -> list[str]:
+    print("🔍 Valor original de 'ejercicio':", repr(ejercicio))
+    ejercicio = re.sub(r"\s+", "", ejercicio, flags=re.UNICODE)
+    carpeta_ejercicio = os.path.join(VIDEO_ROOT, ejercicio)
 
-    def exists(self):
-        return self._path.exists()
+    print("🧪 Buscando vídeos en:", carpeta_ejercicio)
 
+    if not os.path.exists(carpeta_ejercicio):
+        print("❌ Carpeta no encontrada.")
+        return []
 
-# Base folder
-BASE = Path("recursos/videos")
+    return [
+        os.path.join("recursos", "videos", ejercicio, f).replace("\\", "/")
+        for f in os.listdir(carpeta_ejercicio)
+        if f.lower().endswith((".mp4", ".mov", ".avi"))
+    ]
 
-
-class curl_bicep:
-    curl_bicep1 = _VideoPath(BASE/"curl_bicep"/"curl_bicep_1.mp4")
-    # Añade más si tienes: curl_bicep2 = _VideoPath(...)
-
-
-class flexiones:
-    flexiones1 = _VideoPath(BASE / "flexiones" / "flexiones_1.mp4")
-    # flexiones2 = _VideoPath(...)
 
 

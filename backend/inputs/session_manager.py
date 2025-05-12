@@ -1,6 +1,7 @@
 # backend/inputs/session_manager.py
 
 from typing import Optional
+from urllib import request
 from inputs.base_session import BaseSession
 from inputs.camera_session import CameraSession
 from inputs.video_session import VideoSession
@@ -15,8 +16,10 @@ class SessionManager:
         self.start_time: Optional[datetime] = None
         self.end_time: Optional[datetime] = None
         
-
+        
     def iniciar_sesion(self, tipo: str, nombre_ejercicio: str, fuente: Optional[str] = None):
+        print(f"🔍 Iniciando sesión con fuente: {request.fuente}")
+
         """
         Inicia una nueva sesión (camera o video).
         """
@@ -37,6 +40,7 @@ class SessionManager:
         self.nombre_ejercicio = nombre_ejercicio
         self.start_time = datetime.now()
 
+
     def detener_sesion(self):
         """
         Detiene la sesión activa.
@@ -46,6 +50,7 @@ class SessionManager:
             self.end_time = datetime.now()
             self.session = None
 
+
     def obtener_repeticiones(self) -> int:
         """
         Devuelve el número actual de repeticiones.
@@ -53,6 +58,7 @@ class SessionManager:
         if self.session:
             return self.session.get_repeticiones()
         return 0
+    
     
     def generar_resumen(self, reps: int) -> dict:
         if not self.start_time or not self.end_time:
@@ -70,9 +76,10 @@ class SessionManager:
             "duracion_formateada": str(duracion),
         }
 
-    
+
     def sesion_activa(self) -> bool:
         """
         Indica si hay una sesión corriendo.
         """
         return self.session is not None
+    

@@ -1,7 +1,7 @@
 // src/shared/core/domain/ejercicio.entity.ts
 
 export type EjercicioId =
-  | "bicep_curl"
+  | "curl_bicep"
   | "sentadilla"
   | "flexion"
   | "plancha"
@@ -15,7 +15,7 @@ export interface Ejercicio {
 
 export const EJERCICIOS: Ejercicio[] = [
   {
-    id: "bicep_curl",
+    id: "curl_bicep",
     nombre: "Curl de Bíceps",
     descripcion: "Flexión de brazo para trabajar el bíceps.",
   },

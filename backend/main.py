@@ -1,6 +1,8 @@
 # backend/main.py
 
-from fastapi import FastAPI
+import os
+import re
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
@@ -46,6 +48,8 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
     if session_manager.sesion_activa():
         return {"error": "Ya hay un ejercicio en curso"}
 
+    print(f"✅ Backend: tipo={request.tipo}, ejercicio={request.nombre_ejercicio}, fuente={request.fuente}")
+
     ejercicio_actual = request.nombre_ejercicio
     try:
         session_manager.iniciar_sesion(
@@ -88,3 +92,13 @@ async def finalizar_ejercicio():
 @app.get("/historial")
 async def ver_historial():
     return {"historial": historial_ejercicios}
+
+from core.video_paths import listar_videos_por_ejercicio
+
+@app.get("/videos-disponibles")
+async def listar_videos_disponibles(ejercicio: str = Query(...)):
+    ejercicio = re.sub(r"[^\w]", "", ejercicio)  # Solo letras, números y guiones bajos
+    print("📦 Ejercicio limpio recibido:", repr(ejercicio))
+
+    videos = listar_videos_por_ejercicio(ejercicio)
+    return {"videos": videos}
