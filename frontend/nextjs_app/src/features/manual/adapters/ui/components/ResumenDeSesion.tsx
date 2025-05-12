@@ -76,6 +76,30 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
     link.click();
   };
   
+  const handleExportarCSVDetallado = () => {
+    if (!resumen.detalles_frame_a_frame) return;
+
+    const encabezados = ["timestamp", "angulo", "repeticiones", "estado"];
+    const filas = resumen.detalles_frame_a_frame.map((f) => [
+      f.timestamp,
+      f.angulo ?? "",
+      f.repeticiones,
+      f.estado,
+    ]);
+
+    const contenido = [encabezados, ...filas]
+      .map((fila) => fila.map((valor) => `"${valor}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", `detalle_sesion_${resumen.ejercicio}.csv`);
+    link.click();
+  };
+
   return (
     <div className="flex flex-col items-center gap-6 bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
       <h2 className="text-2xl font-bold text-gray-800">
@@ -97,16 +121,22 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
         className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
         >
         📄 Exportar como PDF
-    </button>
+      </button>
 
-    <button
-        onClick={handleExportarCSV}
-        className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+      <button
+          onClick={handleExportarCSV}
+          className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+          >
+          📄 Exportar como CSV
+      </button>
+
+      <button
+        onClick={handleExportarCSVDetallado}
+        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
         >
-        📄 Exportar como CSV
-    </button>
+        📈 Exportar datos detallados (CSV)
+      </button>
 
-    
       <button
         onClick={onVolver}
         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
