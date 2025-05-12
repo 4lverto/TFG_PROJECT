@@ -7,7 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 
+from core.ejercicios.ejercicio_enum import EjercicioId
 from inputs.session_manager import SessionManager
+from inputs.tipo_entrada_enum import TipoEntrada
+
+# main.py (fragmento)
+
+from core.ejercicios.ejercicio_enum import EjercicioId
 
 # Crear instancia FastAPI
 app = FastAPI(
@@ -31,10 +37,13 @@ ejercicio_actual: Optional[str] = None
 historial_ejercicios: List[dict] = []
 
 # Modelos
+# ✅ Versión correcta, que usa Enum
+from core.ejercicios.ejercicio_enum import EjercicioId
+
 class IniciarSesionRequest(BaseModel):
-    tipo: str  # "camera" o "video"
-    nombre_ejercicio: str
-    fuente: Optional[str] = None  # Ruta vídeo si aplica
+    tipo: TipoEntrada  # "camera" o "video" — más adelante la cambiaremos también por Enum
+    nombre_ejercicio: EjercicioId
+    fuente: Optional[str] = None
 
 # Rutas API
 @app.get("/")
@@ -50,10 +59,11 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
 
     print(f"✅ Backend: tipo={request.tipo}, ejercicio={request.nombre_ejercicio}, fuente={request.fuente}")
 
-    ejercicio_actual = request.nombre_ejercicio
+    ejercicio_actual = request.nombre_ejercicio.value
+
     try:
         session_manager.iniciar_sesion(
-            tipo=request.tipo,
+            tipo=request.tipo.value,
             nombre_ejercicio=request.nombre_ejercicio,
             fuente=request.fuente
         )
@@ -95,10 +105,9 @@ async def ver_historial():
 
 from core.video_paths import listar_videos_por_ejercicio
 
-@app.get("/videos-disponibles")
-async def listar_videos_disponibles(ejercicio: str = Query(...)):
-    ejercicio = re.sub(r"[^\w]", "", ejercicio)  # Solo letras, números y guiones bajos
-    print("📦 Ejercicio limpio recibido:", repr(ejercicio))
+from core.ejercicios.ejercicio_enum import EjercicioId
 
-    videos = listar_videos_por_ejercicio(ejercicio)
+@app.get("/videos-disponibles")
+async def listar_videos_disponibles(ejercicio: EjercicioId = Query(...)):
+    videos = listar_videos_por_ejercicio(ejercicio.value)
     return {"videos": videos}
