@@ -4,6 +4,7 @@ import os
 import threading
 import cv2
 from typing import Optional
+import time
 
 from pose_module.pose_tracker import PoseTracker
 from core.ejercicios.factory import get_ejercicio
@@ -17,6 +18,7 @@ class VideoSession(BaseSession):
         self.running = False
         self.thread = None
         self.cap = None
+        self.historial_frames = []
 
     def start(self, nombre_ejercicio: str, fuente: Optional[str] = None):
         if self.running:
@@ -65,8 +67,19 @@ class VideoSession(BaseSession):
             puntos = self.pose_tracker.extraer_landmarks(results, frame.shape)
 
             if puntos and self.contador:
-                _, reps = self.contador.actualizar(puntos)
+                angulo, reps = self.contador.actualizar(puntos)
                 self.repeticiones = reps
+
+                timestamp = time.time()
+                estado = "activo" if self.contador.arriba or self.contador.abajo else "reposo"
+
+                self.historial_frames.append({
+                    "timestamp": timestamp,
+                    "angulo": angulo if angulo is not None else None,
+                    "repeticiones": self.repeticiones,
+                    "estado": estado,
+                    "landmarks": puntos
+                })
 
             frame = self.pose_tracker.dibuja_landmarks(frame, results)
             cv2.imshow("Vídeo - Seguimiento", frame)

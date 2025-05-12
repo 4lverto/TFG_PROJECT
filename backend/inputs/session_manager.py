@@ -16,6 +16,7 @@ class SessionManager:
         self.nombre_ejercicio: Optional[str] = None
         self.start_time: Optional[datetime] = None
         self.end_time: Optional[datetime] = None
+        self.historial_temporal = []
         
     def iniciar_sesion(self, tipo: TipoEntrada, nombre_ejercicio, fuente: Optional[str] = None):
         print(f"🔍 Iniciando sesión con tipo={tipo}, ejercicio={nombre_ejercicio}, fuente={fuente}")
@@ -47,6 +48,7 @@ class SessionManager:
         if self.session:
             self.session.stop()
             self.end_time = datetime.now()
+            self.historial_temporal = self.session.historial_frames
             self.session = None
 
 
@@ -73,6 +75,7 @@ class SessionManager:
             "fin": self.end_time.isoformat(),
             "duracion_segundos": int(duracion.total_seconds()),
             "duracion_formateada": str(duracion),
+            "detalles_frame_a_frame": self.historial_temporal
         }
 
 
