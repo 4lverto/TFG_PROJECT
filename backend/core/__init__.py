@@ -1,3 +1,3 @@
 
-from .ejercicios.bicep_curl import BicepCurl
+from .ejercicios.curl_bicep import CurlBicep
 from .ejercicios.base import EjercicioContador

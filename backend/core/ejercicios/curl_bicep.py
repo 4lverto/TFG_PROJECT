@@ -1,7 +1,7 @@
 from .base import EjercicioContador
 from utils.angulos import calcular_angulo_landmarks
 
-class BicepCurl(EjercicioContador):
+class CurlBicep(EjercicioContador):
     def __init__(self, lado='derecho'):
         super().__init__()
         self.lado = lado

@@ -23,7 +23,7 @@ def main():
     else:
         print("✅ Ruta encontrada:", VIDEO_PATH)
         
-    session.start(nombre_ejercicio="bicep_curl", fuente=VIDEO_PATH)
+    session.start(nombre_ejercicio="curl_bicep", fuente=VIDEO_PATH)
 
     tiempo_max = 30
     tiempo_inicio = time.time()

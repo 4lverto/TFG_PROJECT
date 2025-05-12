@@ -1,4 +1,4 @@
-from core.ejercicios.bicep_curl import BicepCurl
+from core.ejercicios.curl_bicep import CurlBicep
 # Aquí luego importaremos también: Sentadilla, Flexion, JumpingJack, etc.
 
 def get_ejercicio(nombre: str, lado='derecho'):
@@ -15,8 +15,8 @@ def get_ejercicio(nombre: str, lado='derecho'):
     """
     nombre = nombre.lower()
 
-    if nombre == "bicep_curl":
-        return BicepCurl(lado=lado)
+    if nombre == "curl_bicep":
+        return CurlBicep(lado=lado)
     
     # Aquí irán luego más ejercicios:
     # elif nombre == "sentadilla":

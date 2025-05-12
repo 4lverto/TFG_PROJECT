@@ -29,7 +29,8 @@ class VideoSession(BaseSession):
         
         fuente = fuente.strip()  # Elimina saltos de línea, espacios
         if not os.path.isabs(fuente):
-            fuente = os.path.abspath(os.path.join(os.getcwd(), fuente))
+            BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+            fuente = os.path.abspath(os.path.join(BASE_DIR, fuente))
         
         print(f"📂 Ruta final a abrir: {fuente}")
         

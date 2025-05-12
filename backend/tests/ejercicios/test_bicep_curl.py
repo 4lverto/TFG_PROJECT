@@ -23,7 +23,7 @@ else:
 pose_tracker = PoseTracker()
 
 # 🎯 Creamos el contador de ejercicio dinámicamente
-contador = get_ejercicio("bicep_curl", lado="derecho")
+contador = get_ejercicio("curl_bicep", lado="derecho")
 
 while True:
     ret, frame = cap.read()

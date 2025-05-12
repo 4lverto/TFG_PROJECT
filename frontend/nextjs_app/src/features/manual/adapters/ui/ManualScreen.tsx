@@ -28,7 +28,13 @@ export default function ManualScreen() {
     try {
       setResumen(null);
       setMensaje("⏳ Iniciando sesión...");
-      await iniciarSesion(tipoEntrada, ejercicioSeleccionado.trim(), videoSeleccionado);
+
+      if (tipoEntrada === "camera") {
+        await iniciarSesion("camera", ejercicioSeleccionado.trim());
+      } else {
+        await iniciarSesion("video", ejercicioSeleccionado.trim(), videoSeleccionado);
+      }
+
       setEjercicioActivo(true);
       setMensaje("✅ Ejercicio iniciado correctamente");
     } catch (error) {
@@ -36,6 +42,7 @@ export default function ManualScreen() {
       setMensaje("❌ Error al iniciar el ejercicio");
     }
   };
+
 
   const handleFinalizar = async () => {
     try {

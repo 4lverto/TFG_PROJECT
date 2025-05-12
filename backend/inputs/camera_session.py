@@ -17,27 +17,33 @@ class CameraSession(BaseSession):
         self.thread = None
         self.cap = None
 
-    def start(self, nombre_ejercicio: str, fuente: Optional[str] = None):
+    def start(self, nombre_ejercicio: str):
+        print("🚀 CameraSession.start() invocado")
         if self.running:
             return
         
         self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
+            print("❌ Cámara no se pudo abrir")
             raise RuntimeError("No se pudo abrir la cámara")
 
         self.contador = get_ejercicio(nombre_ejercicio)
 
         self.repeticiones = 0
         self.running = True
+        print("🚀 Lanzando hilo de cámara")
         self.thread = threading.Thread(target=self._loop, daemon=True)
         self.thread.start()
 
     def _loop(self):
+        print("🎥 Entrando en bucle de captura de cámara")
         while self.running and self.cap.isOpened():
             ret, frame = self.cap.read()
             if not ret:
+                print("❌ No se pudo capturar frame")
                 break
 
+            print("📸 Frame capturado correctamente")
             results = self.pose_tracker.procesar(frame)
             puntos = self.pose_tracker.extraer_landmarks(results, frame.shape)
 
