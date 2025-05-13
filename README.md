@@ -30,7 +30,7 @@ Este proyecto de TFG permite el reconocimiento, conteo y análisis de ejercicios
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/TU_USUARIO/TU_REPO.git
+git clone blablabla
 cd TFG_PROJECT
 
 # Crear entorno virtual
