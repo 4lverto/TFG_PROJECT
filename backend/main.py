@@ -41,9 +41,10 @@ historial_ejercicios: List[dict] = []
 from core.ejercicios.ejercicio_enum import EjercicioId
 
 class IniciarSesionRequest(BaseModel):
-    tipo: TipoEntrada  # "camera" o "video" — más adelante la cambiaremos también por Enum
+    tipo: TipoEntrada 
     nombre_ejercicio: EjercicioId
     fuente: Optional[str] = None
+    lado: Optional[str] = "derecho"
 
 # Rutas API
 @app.get("/")
@@ -52,6 +53,7 @@ async def root():
 
 @app.post("/iniciar-ejercicio")
 async def iniciar_ejercicio(request: IniciarSesionRequest):
+    print("📥 Recibido:", request.dict())
     global ejercicio_actual
 
     if session_manager.sesion_activa():
@@ -65,7 +67,8 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
         session_manager.iniciar_sesion(
             tipo=request.tipo.value,
             nombre_ejercicio=request.nombre_ejercicio,
-            fuente=request.fuente
+            fuente=request.fuente,
+            lado=request.lado,
         )
     except Exception as e:
         return {"error": str(e)}

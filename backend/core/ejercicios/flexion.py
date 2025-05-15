@@ -1,4 +1,4 @@
-# core/ejercicios/plancha.py
+# core/ejercicios/flexion.py
 from .base import EjercicioContador
 
 class Flexion(EjercicioContador):

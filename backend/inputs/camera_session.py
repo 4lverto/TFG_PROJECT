@@ -23,7 +23,7 @@ class CameraSession(BaseSession):
         self.cap = None
         self.historial_frames = []
 
-    def start(self, nombre_ejercicio: str):
+    def start(self, nombre_ejercicio: str, lado: str = "derecho"):
         print("🚀 CameraSession.start() invocado")
         if self.running:
             return
@@ -33,7 +33,7 @@ class CameraSession(BaseSession):
             print("❌ Cámara no se pudo abrir")
             raise RuntimeError("No se pudo abrir la cámara")
 
-        self.contador = get_ejercicio(nombre_ejercicio)
+        self.contador = get_ejercicio(nombre_ejercicio,lado)
 
         self.repeticiones = 0
         self.running = True

@@ -1,0 +1,11 @@
+# core/ejercicios/tricep_dip.py
+from .base import EjercicioContador
+
+class TricepDip(EjercicioContador):
+    def __init__(lado="derecho"):
+        if(lado=="derecho"):
+            puntos = (12,14,16) # Hombro (der) = 12 , Codo (der) = 14 y Muñeca (der) = 16
+        else:
+            puntos = (11,13,15) # Hombro (der) = 11 , Codo (der) = 13 y Muñeca (der) = 15
+            
+        super().__init__(angulo_min=90,angulo_max=160,puntos=puntos)

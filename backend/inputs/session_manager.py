@@ -18,7 +18,7 @@ class SessionManager:
         self.end_time: Optional[datetime] = None
         self.historial_temporal = []
         
-    def iniciar_sesion(self, tipo: TipoEntrada, nombre_ejercicio, fuente: Optional[str] = None):
+    def iniciar_sesion(self, tipo: TipoEntrada, nombre_ejercicio, fuente: Optional[str] = None, lado: str = "derecho"):
         print(f"🔍 Iniciando sesión con tipo={tipo}, ejercicio={nombre_ejercicio}, fuente={fuente}")
         
         if self.session is not None:
@@ -26,12 +26,12 @@ class SessionManager:
 
         if tipo == TipoEntrada.CAMARA:
             self.session = CameraSession()
-            self.session.start(nombre_ejercicio)
+            self.session.start(nombre_ejercicio,lado)
         elif tipo == TipoEntrada.VIDEO:
             if not fuente:
                 raise ValueError("Se requiere fuente de vídeo para iniciar una sesión de tipo 'video'")
             self.session = VideoSession()
-            self.session.start(nombre_ejercicio, fuente)
+            self.session.start(nombre_ejercicio, fuente, lado)
         else:
             raise ValueError(f"Tipo de sesión desconocido: {tipo}")
 

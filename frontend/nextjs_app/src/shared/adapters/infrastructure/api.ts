@@ -1,18 +1,27 @@
 // src/shared/adapters/infrastructure/api.ts
 
+import { IniciarSesionEntity } from "@/shared/core/domain/iniciar-sesion.entity";
+
 const BACKEND_URL = 'http://localhost:8000';
 
-export async function iniciarSesion(tipo: string, nombre: string, fuente?: string) {
+async function iniciarSesion(tipo: string, nombre: string, fuente?: string, lado: string = "derecho" ) {
+  
+  const body: IniciarSesionEntity = {
+    tipo,
+    nombre_ejercicio: nombre,
+    lado,
+  };
+
+  if(tipo === "video" && fuente){
+    body.fuente = fuente;
+  }
+
   const response = await fetch(`${BACKEND_URL}/iniciar-ejercicio`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      tipo,
-      nombre_ejercicio: nombre,
-      fuente,
-    }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
@@ -22,7 +31,7 @@ export async function iniciarSesion(tipo: string, nombre: string, fuente?: strin
   return response.json();
 }
 
-export async function estadoEjercicio() {
+async function estadoEjercicio() {
   const response = await fetch(`${BACKEND_URL}/estado-ejercicio`);
   if (!response.ok) {
     throw new Error('Error al obtener estado del ejercicio');
@@ -30,7 +39,7 @@ export async function estadoEjercicio() {
   return response.json();
 }
 
-export async function finalizarEjercicio() {
+async function finalizarEjercicio() {
   const response = await fetch(`${BACKEND_URL}/finalizar-ejercicio`, {
     method: 'POST',
   });
@@ -40,10 +49,12 @@ export async function finalizarEjercicio() {
   return response.json();
 }
 
-export async function verHistorial() {
+async function verHistorial() {
   const response = await fetch(`${BACKEND_URL}/historial`);
   if (!response.ok) {
     throw new Error('Error al obtener historial de ejercicios');
   }
   return response.json();
 }
+
+export { iniciarSesion, estadoEjercicio, finalizarEjercicio, verHistorial }

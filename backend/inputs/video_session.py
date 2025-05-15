@@ -26,7 +26,7 @@ class VideoSession(BaseSession):
         self.cap = None
         self.historial_frames = []
 
-    def start(self, nombre_ejercicio: str, fuente: Optional[str] = None):
+    def start(self, nombre_ejercicio: str, fuente: Optional[str] = None, lado: str = "derecho"):
         if self.running:
             return
 
@@ -50,7 +50,7 @@ class VideoSession(BaseSession):
         if not self.cap.isOpened():
             raise RuntimeError(f"No se pudo abrir el archivo de vídeo")
 
-        self.contador = get_ejercicio(nombre_ejercicio)
+        self.contador = get_ejercicio(nombre_ejercicio,lado)
 
         self.repeticiones = 0
         self.running = True

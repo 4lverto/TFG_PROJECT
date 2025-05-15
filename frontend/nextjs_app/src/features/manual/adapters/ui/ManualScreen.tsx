@@ -9,6 +9,7 @@ import {
 import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
 import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
 import ResumenDeSesion from "./components/ResumenDeSesion";
+import { TIPO_ENTRADA } from "@/shared/core/enums/tipo_entrada.enum";
 
 export default function ManualScreen() {
   const [tipoEntrada, setTipoEntrada] = useState<"camera" | "video">("camera");
@@ -19,6 +20,7 @@ export default function ManualScreen() {
   const [mensaje, setMensaje] = useState("");
   const [repeticiones, setRepeticiones] = useState(0);
   const [resumen, setResumen] = useState<ResumenSesion | null>(null);
+  const [lado,setLado] = useState("derecho");
 
   const handleTipoEntradaChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setTipoEntrada(e.target.value as "camera" | "video");
@@ -29,10 +31,10 @@ export default function ManualScreen() {
       setResumen(null);
       setMensaje("⏳ Iniciando sesión...");
 
-      if (tipoEntrada === "camera") {
-        await iniciarSesion("camera", ejercicioSeleccionado.trim());
+      if (tipoEntrada === TIPO_ENTRADA.CAMERA) {
+        await iniciarSesion(TIPO_ENTRADA.CAMERA, ejercicioSeleccionado.trim(),undefined,lado);
       } else {
-        await iniciarSesion("video", ejercicioSeleccionado.trim(), videoSeleccionado);
+        await iniciarSesion(TIPO_ENTRADA.VIDEO, ejercicioSeleccionado.trim(), videoSeleccionado,lado);
       }
 
       setEjercicioActivo(true);
@@ -57,7 +59,7 @@ export default function ManualScreen() {
   };
 
   useEffect(() => {
-    if (tipoEntrada === "video") {
+    if (tipoEntrada === TIPO_ENTRADA.VIDEO) {
       const fetchVideos = async () => {
         console.log("EJERCICIO ENVIADO:", JSON.stringify(ejercicioSeleccionado));
         try {
@@ -139,6 +141,17 @@ export default function ManualScreen() {
                 </option>
               ))}
             </select>
+            
+              {EJERCICIOS.find((ej) => ej.id === ejercicioSeleccionado)?.usaLado && (
+                <>
+                  <label className="text-lg font-semibold text-gray-700"> ¿Con qué lado del cuerpo trabajarás? </label>
+                  <select value={lado} onChange={(e) => setLado(e.target.value)}
+                    className="p-2 rounded border border-gray-300">
+                      <option value="derecho">Derecho</option>
+                      <option value="izquierdo">Izquierdo</option>
+                  </select>
+                </>
+              )}
 
             {tipoEntrada === "video" && (
               <>

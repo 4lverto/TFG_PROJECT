@@ -4,13 +4,18 @@ export type EjercicioId =
   | "curl_bicep"
   | "sentadilla"
   | "flexion"
-  | "plancha"
-  | "jumping_jack";
+  | "press_militar"
+  | "quad_extension"
+  | "crunch_abdominal"
+  | "tricep_dip"
+  | "elevacion_lateral"
+  ;
 
 export interface Ejercicio {
   id: EjercicioId;
   nombre: string;
   descripcion?: string;
+  usaLado?: true;
 }
 
 export const EJERCICIOS: Ejercicio[] = [
@@ -18,6 +23,7 @@ export const EJERCICIOS: Ejercicio[] = [
     id: "curl_bicep",
     nombre: "Curl de Bíceps",
     descripcion: "Flexión de brazo para trabajar el bíceps.",
+    usaLado: true,
   },
   {
     id: "sentadilla",
@@ -30,13 +36,31 @@ export const EJERCICIOS: Ejercicio[] = [
     descripcion: "Trabajo de pecho, tríceps y core.",
   },
   {
-    id: "plancha",
+    id: "press_militar",
     nombre: "Plancha",
-    descripcion: "Ejercicio isométrico de core.",
+    descripcion: "Ejercicio para trabajo de hombro.",
+    usaLado: true,
   },
   {
-    id: "jumping_jack",
-    nombre: "Jumping Jack",
-    descripcion: "Ejercicio cardiovascular de cuerpo completo.",
+    id: "quad_extension",
+    nombre: "Extensión de Cuadriceps",
+    descripcion: "Trabajo de cuadricep",
+    usaLado: true,
   },
+  {
+    id: "crunch_abdominal",
+    nombre: "Crunch Abdominal",
+    descripcion: "Trabajo de abdominal con las rodillas flexionadas",
+  },
+  {
+    id: "tricep_dip",
+    nombre: "Tricep Dip",
+    descripcion: "Trabajo de tricep realizable de muy variadas maneras"
+  },
+  {
+    id: "elevacion_lateral",
+    nombre: "Elevación Lateral",
+    descripcion: "Trabajo de deltoides y hombro",
+    usaLado: true,
+  }
 ];
