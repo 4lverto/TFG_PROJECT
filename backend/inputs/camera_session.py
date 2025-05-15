@@ -1,5 +1,6 @@
 # backend/inputs/camera_session.py
 
+import ctypes
 import threading
 import cv2
 from typing import Optional
@@ -8,6 +9,9 @@ import time;
 from pose_module.pose_tracker import PoseTracker
 from core.ejercicios.factory import get_ejercicio
 from inputs.base_session import BaseSession
+
+def get_screen_height():
+    return ctypes.windll.user32.GetSystemMetrics(1)  # Altura de pantalla
 
 class CameraSession(BaseSession):
     def __init__(self):
@@ -38,40 +42,47 @@ class CameraSession(BaseSession):
         self.thread.start()
 
     def _loop(self):
-        print("🎥 Entrando en bucle de captura de cámara")
+        pantalla_alto = ctypes.windll.user32.GetSystemMetrics(1)
+        nuevo_alto = pantalla_alto - 120
+
+        # Crear ventana antes del bucle
+        cv2.namedWindow("Cámara - Seguimiento de Ejercicio", cv2.WINDOW_NORMAL)
+        cv2.moveWindow("Cámara - Seguimiento de Ejercicio", 100, 100)
+
         while self.running and self.cap.isOpened():
             ret, frame = self.cap.read()
             if not ret:
-                print("❌ No se pudo capturar frame")
                 break
 
-            print("📸 Frame capturado correctamente")
             results = self.pose_tracker.procesar(frame)
             puntos = self.pose_tracker.extraer_landmarks(results, frame.shape)
 
             if puntos and self.contador:
                 angulo, reps = self.contador.actualizar(puntos)
                 self.repeticiones = reps
-
                 timestamp = time.time()
                 estado = "activo" if self.contador.arriba or self.contador.abajo else "reposo"
-
                 self.historial_frames.append({
                     "timestamp": timestamp,
-                    "angulo": angulo if angulo is not None else None,
+                    "angulo": angulo,
                     "repeticiones": self.repeticiones,
                     "estado": estado,
                     "landmarks": puntos
                 })
 
-            # 🧠 Mostrar ventana de cámara (nuevo)
-            frame = self.pose_tracker.dibuja_landmarks(frame, results)
-            cv2.imshow("Cámara - Seguimiento de Ejercicio", frame)
+            if results:
+                frame = self.pose_tracker.dibuja_landmarks(frame, results)
+                alto_original, ancho_original = frame.shape[:2]
+                ratio = nuevo_alto / alto_original
+                nuevo_ancho = int(ancho_original * ratio)
+                frame = cv2.resize(frame, (nuevo_ancho, nuevo_alto))
+                cv2.imshow("Cámara - Seguimiento de Ejercicio", frame)
 
-            if cv2.waitKey(1) & 0xFF == 27:  # Presionar ESC para detener sesión
+            if cv2.waitKey(1) & 0xFF == 27:
                 self.running = False
 
         self._cleanup()
+
 
 
     def stop(self):

@@ -3,12 +3,18 @@
 import os
 import threading
 import cv2
-from typing import Optional
 import time
+import ctypes
+from typing import Optional
 
 from pose_module.pose_tracker import PoseTracker
 from core.ejercicios.factory import get_ejercicio
 from inputs.base_session import BaseSession
+
+
+def get_screen_height():
+    return ctypes.windll.user32.GetSystemMetrics(1)  # Altura de pantalla
+
 
 class VideoSession(BaseSession):
     def __init__(self):
@@ -23,26 +29,23 @@ class VideoSession(BaseSession):
     def start(self, nombre_ejercicio: str, fuente: Optional[str] = None):
         if self.running:
             return
-        
+
         if fuente is None:
             raise ValueError("Se debe proporcionar la ruta del archivo de vídeo.")
-        
+
         print(f"🔍 Ruta inicial: {fuente}")
-        
-        fuente = fuente.strip()  # Elimina saltos de línea, espacios
+
+        fuente = fuente.strip()
         if not os.path.isabs(fuente):
             BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
             fuente = os.path.abspath(os.path.join(BASE_DIR, fuente))
-        
+
         print(f"📂 Ruta final a abrir: {fuente}")
-        
-        print(f"📄 Longitud ruta: {len(fuente)} → Contenido: [{fuente}]")
-        for i, c in enumerate(fuente):
-            print(f"  [{i}] = {repr(c)}")
-        
+
         if not os.path.exists(fuente):
             print("❌ El archivo de vídeo no existe en el sistema.")
-    
+            return
+
         self.cap = cv2.VideoCapture(fuente)
         if not self.cap.isOpened():
             raise RuntimeError(f"No se pudo abrir el archivo de vídeo")
@@ -54,8 +57,14 @@ class VideoSession(BaseSession):
         self.thread = threading.Thread(target=self._loop, daemon=True)
         self.thread.start()
 
-
     def _loop(self):
+        pantalla_alto = get_screen_height()
+        nuevo_alto = pantalla_alto - 120
+
+        # Crear ventana solo una vez
+        cv2.namedWindow("Vídeo - Seguimiento", cv2.WINDOW_NORMAL)
+        cv2.moveWindow("Vídeo - Seguimiento", 100, 100)
+
         while self.running and self.cap.isOpened():
             ret, frame = self.cap.read()
             if not ret:
@@ -81,15 +90,21 @@ class VideoSession(BaseSession):
                     "landmarks": puntos
                 })
 
-            frame = self.pose_tracker.dibuja_landmarks(frame, results)
-            cv2.imshow("Vídeo - Seguimiento", frame)
+            if results:
+                frame = self.pose_tracker.dibuja_landmarks(frame, results)
 
-            if cv2.waitKey(25) & 0xFF == 27:  # ESC para salir
+                alto_original, ancho_original = frame.shape[:2]
+                ratio = nuevo_alto / alto_original
+                nuevo_ancho = int(ancho_original * ratio)
+                frame = cv2.resize(frame, (nuevo_ancho, nuevo_alto))
+
+                cv2.imshow("Vídeo - Seguimiento", frame)
+
+            if cv2.waitKey(25) & 0xFF == 27:
                 self.running = False
-        
+
         print(f"🏁 Procesamiento de vídeo finalizado. Total repeticiones: {self.repeticiones}")
         self._cleanup()
-
 
     def stop(self):
         self.running = False
@@ -100,7 +115,7 @@ class VideoSession(BaseSession):
     def _cleanup(self):
         if self.cap:
             self.cap.release()
-        cv2.destroyAllWindows() # Cierra la ventana al finalizar
+        cv2.destroyAllWindows()
 
     def get_repeticiones(self) -> int:
         return self.repeticiones
