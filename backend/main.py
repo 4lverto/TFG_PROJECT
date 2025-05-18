@@ -10,11 +10,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 
+from inputs.sesion.session_controller import(
+    iniciar_sesion,
+    detener_sesion,
+    obtener_repeticiones,
+    generar_resumen,
+    sesion_activa
+)
 from core.ejercicio_enum import EjercicioId
-from inputs.session_manager import SessionManager
-from inputs.tipo_entrada_enum import TipoEntrada
+from inputs.sesion.tipo_entrada_enum import TipoEntrada
 
-from inputs.video_paths import listar_videos_por_ejercicio
+from inputs.entradas.video_paths import listar_videos_por_ejercicio
 
 # -------------------------------
 # Helpers
@@ -37,11 +43,8 @@ app.add_middleware(
 )
 
 # Estado global
-session_manager = SessionManager()
 ejercicio_actual: Optional[str] = None
 historial_ejercicios: List[dict] = []
-
-
 
 class IniciarSesionRequest(BaseModel):
     tipo: TipoEntrada 
@@ -59,7 +62,7 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
     print("Recibido:", request.dict())
     global ejercicio_actual
 
-    if session_manager.sesion_activa():
+    if sesion_activa():
         return {"error": "Ya hay un ejercicio en curso"}
 
     print(f"Backend: tipo={request.tipo}, ejercicio={request.nombre_ejercicio}, fuente={request.fuente}")
@@ -67,7 +70,7 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
     ejercicio_actual = request.nombre_ejercicio.value
 
     try:
-        session_manager.iniciar_sesion(
+        iniciar_sesion(
             tipo=request.tipo.value,
             nombre_ejercicio=request.nombre_ejercicio,
             fuente=request.fuente,
@@ -83,7 +86,7 @@ async def estado_ejercicio():
     if not ejercicio_actual:
         return {"mensaje": "No hay ejercicio en curso"}
 
-    repeticiones = session_manager.obtener_repeticiones()
+    repeticiones = obtener_repeticiones()
 
     return {
         "ejercicio": ejercicio_actual,
@@ -97,9 +100,9 @@ async def finalizar_ejercicio():
     if not ejercicio_actual:
         return {"error": "No hay ejercicio en curso"}
 
-    repeticiones_finales = session_manager.obtener_repeticiones()
-    session_manager.detener_sesion()
-    resumen = session_manager.generar_resumen(reps=repeticiones_finales)
+    repeticiones_finales = obtener_repeticiones()
+    detener_sesion()
+    resumen = generar_resumen(reps=repeticiones_finales)
     
     historial_ejercicios.append(resumen)
     ejercicio_actual = None

@@ -1,4 +1,4 @@
-# backend/tests/test_video_session_manual.py
+# tests/test_video_session_manual.py
 # -------------------------------
 # Requierements
 # -------------------------------
@@ -6,7 +6,7 @@ import sys
 import os
 import time
 
-from inputs.video_session import VideoSession
+from inputs.entradas.video_session import VideoSession
 
 # -------------------------------
 # Helpers

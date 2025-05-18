@@ -1,4 +1,4 @@
-# backend/inputs/video_session.py
+# inputs/video_session.py
 # -------------------------------
 # Requierements
 # -------------------------------
@@ -11,7 +11,7 @@ from typing import Optional
 
 from pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
-from inputs.base_session import BaseSession
+from inputs.entradas.base_session import BaseSession
 
 # -------------------------------
 # Helpers
@@ -108,7 +108,7 @@ class VideoSession(BaseSession):
             if cv2.waitKey(25) & 0xFF == 27:
                 self.running = False
 
-        print(f"🏁 Procesamiento de vídeo finalizado. Total repeticiones: {self.repeticiones}")
+        print(f"Procesamiento de vídeo finalizado. Total repeticiones: {self.repeticiones}")
         self._cleanup()
 
     def stop(self):

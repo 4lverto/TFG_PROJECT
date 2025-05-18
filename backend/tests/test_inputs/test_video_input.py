@@ -6,7 +6,7 @@ import sys
 import os
 
 from pose_module.pose_tracker import PoseTracker
-from backend.inputs import video_paths as video
+from inputs.entradas import video_paths as video
 import cv2
 
 # -------------------------------

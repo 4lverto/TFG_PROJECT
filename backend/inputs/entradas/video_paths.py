@@ -1,43 +1,46 @@
-# -------------------------------
-# Requierements
-# -------------------------------
+# inputs/entradas/video_paths.py
 
 import os
 import re
 
 # -------------------------------
-# Helpers
+# Rutas base del proyecto
 # -------------------------------
 
-# 📁 Directorio base del proyecto
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+# Ruta absoluta al directorio del backend (dos niveles hacia arriba)
+BACKEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
-# 📁 Carpeta que contiene los vídeos de ejercicios
-VIDEO_ROOT = os.path.join(BASE_DIR, "recursos", "videos")
+# Ruta absoluta a la carpeta de vídeos
+VIDEO_ROOT = os.path.join(BACKEND_DIR, "recursos", "videos")
 
-# Diccionario con rutas absolutas a un vídeo por ejercicio (ejemplo)
+# -------------------------------
+# Diccionario de ejemplos (opcional)
+# -------------------------------
+
 VIDEO_PATHS = {
     "curl_bicep": os.path.join(VIDEO_ROOT, "curl_bicep", "curl_bicep_1.mp4"),
-    # Agrega más si tienes vídeos únicos por ejercicio
+    # Puedes añadir más vídeos por defecto si lo necesitas
 }
 
-# Función auxiliar para obtener la ruta a un vídeo específico
+# -------------------------------
+# Funciones auxiliares
+# -------------------------------
+
 def get_video_path(ejercicio: str) -> str:
     path = VIDEO_PATHS.get(ejercicio)
     if not path:
         raise ValueError(f"Ejercicio desconocido: '{ejercicio}'")
     return path
 
-# Función para listar todos los vídeos de un ejercicio (subcarpeta)
 def listar_videos_por_ejercicio(ejercicio: str) -> list[str]:
-    print("🔍 Valor original de 'ejercicio':", repr(ejercicio))
+    print("Valor original de 'ejercicio':", repr(ejercicio))
     ejercicio = re.sub(r"\s+", "", ejercicio, flags=re.UNICODE)
     carpeta_ejercicio = os.path.join(VIDEO_ROOT, ejercicio)
 
-    print("🧪 Buscando vídeos en:", carpeta_ejercicio)
+    print("Buscando vídeos en:", carpeta_ejercicio)
 
     if not os.path.exists(carpeta_ejercicio):
-        print("❌ Carpeta no encontrada.")
+        print("Carpeta no encontrada.")
         return []
 
     return [
@@ -45,6 +48,3 @@ def listar_videos_por_ejercicio(ejercicio: str) -> list[str]:
         for f in os.listdir(carpeta_ejercicio)
         if f.lower().endswith((".mp4", ".mov", ".avi"))
     ]
-
-
-

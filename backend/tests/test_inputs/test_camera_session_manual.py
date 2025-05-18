@@ -4,7 +4,7 @@
 
 import sys, os, time
 
-from inputs.camera_session import CameraSession
+from inputs.entradas.camera_session import CameraSession
 
 # -------------------------------
 # Helpers

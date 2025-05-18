@@ -1,4 +1,4 @@
-# backend/inputs/camera_session.py
+# inputs/camera_session.py
 # -------------------------------
 # Requierements
 # -------------------------------
@@ -10,7 +10,7 @@ import time;
 
 from pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
-from inputs.base_session import BaseSession
+from inputs.entradas.base_session import BaseSession
 
 # -------------------------------
 # Helpers
