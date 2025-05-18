@@ -8,7 +8,7 @@ from inputs.entradas.base_session import BaseSession
 from inputs.entradas.camera_session import CameraSession
 from inputs.entradas.video_session import VideoSession
 from datetime import datetime
-from inputs.sesion.tipo_entrada_enum import TipoEntrada
+from utils.tipo_entrada_enum import TipoEntrada
 
 # -------------------------------
 # Helpers
@@ -25,7 +25,7 @@ class SessionManager:
         self.historial_temporal = []
         
     def iniciar_sesion(self, tipo: TipoEntrada, nombre_ejercicio, fuente: Optional[str] = None, lado: str = "derecho"):
-        print(f"🔍 Iniciando sesión con tipo={tipo}, ejercicio={nombre_ejercicio}, fuente={fuente}")
+        print(f"Iniciando sesión con tipo={tipo}, ejercicio={nombre_ejercicio}, fuente={fuente}")
         
         if self.session is not None:
             raise RuntimeError("Ya hay una sesión activa.")

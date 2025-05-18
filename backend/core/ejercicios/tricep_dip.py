@@ -2,13 +2,13 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..base import EjercicioContador  
+from ..ejercicio import Ejercicio  
 
 # -------------------------------
 # Helpers
 # -------------------------------
 
-class TricepDip(EjercicioContador):
+class TricepDip(Ejercicio):
     def __init__(lado="derecho"):
         if(lado=="derecho"):
             puntos = (12,14,16) # Hombro (der) = 12 , Codo (der) = 14 y Muñeca (der) = 16

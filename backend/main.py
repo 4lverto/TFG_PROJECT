@@ -18,7 +18,7 @@ from inputs.sesion.session_controller import(
     sesion_activa
 )
 from core.ejercicio_enum import EjercicioId
-from inputs.sesion.tipo_entrada_enum import TipoEntrada
+from utils.tipo_entrada_enum import TipoEntrada
 
 from inputs.entradas.video_paths import listar_videos_por_ejercicio
 

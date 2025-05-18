@@ -2,13 +2,13 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..base import EjercicioContador  
+from ..ejercicio import Ejercicio  
 
 # -------------------------------
 # Helpers
 # -------------------------------
 
-class ElevacionLateral(EjercicioContador):
+class ElevacionLateral(Ejercicio):
     def __init__(self, lado="derecho"):
             if lado=='derecho':
                 puntos = (16,12,24) # Cadera (der) = 24 , Hombro (der) = 12 y Codo (der) = 14

@@ -2,13 +2,13 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..base import EjercicioContador  
+from ..ejercicio import Ejercicio  
 
 # -------------------------------
 # Helpers
 # -------------------------------
 
-class CrunchAbdominal(EjercicioContador):
+class CrunchAbdominal(Ejercicio):
     def __init__(self,lado="derecho"):
         if(lado=="derecho"):
             puntos=(26,24,12) # Rodilla (der) = 26, # Cadera (der) = 24, Hombro (der) = 12

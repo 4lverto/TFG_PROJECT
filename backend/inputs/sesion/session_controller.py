@@ -3,7 +3,7 @@
 # -------------------------------
 
 from typing import Optional
-from inputs.sesion.tipo_entrada_enum import TipoEntrada
+from utils.tipo_entrada_enum import TipoEntrada
 from inputs.sesion.session_manager import SessionManager
 
 # -------------------------------

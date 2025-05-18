@@ -2,12 +2,12 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..base import EjercicioContador  
+from ..ejercicio import Ejercicio  
 
 # -------------------------------
 # Helpers
 # -------------------------------
-class CurlBicep(EjercicioContador):
+class CurlBicep(Ejercicio):
     def __init__(self, lado='derecho'):
         if lado == 'derecho':
             puntos = (12, 14, 16)  # hombro, codo, muñeca

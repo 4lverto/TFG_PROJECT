@@ -2,13 +2,13 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..base import EjercicioContador  
+from ..ejercicio import Ejercicio  
 
 # -------------------------------
 # Helpers
 # -------------------------------
 
-class PressMilitar(EjercicioContador):
+class PressMilitar(Ejercicio):
     def __init__(self, lado="derecho"):
         if(lado=="derecho"):
             puntos=(14,12,24) # Codo (der) = 14, # Hombro (der) = 12, Cadera (der) = 24

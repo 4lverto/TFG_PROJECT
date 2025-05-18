@@ -2,13 +2,13 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..base import EjercicioContador  
+from ..ejercicio import Ejercicio  
 
 # -------------------------------
 # Helpers
 # -------------------------------
 
-class QuadExtension(EjercicioContador):
+class QuadExtension(Ejercicio):
     def __init__(self , lado="derecho"):
         if(lado == "derecho"):
             puntos = (24,26,28) # Cadera (der) = 24, # Rodilla (der) = 26, Tobillo (der) = 28
