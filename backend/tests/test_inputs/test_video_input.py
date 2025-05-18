@@ -1,12 +1,19 @@
+# -------------------------------
+# Requierements
+# -------------------------------
+
 import sys
 import os
-sys.path.append(os.path.abspath('.'))
 
 from pose_module.pose_tracker import PoseTracker
-from core import video_paths as video
+from backend.inputs import video_paths as video
 import cv2
 
-# Ruta al vídeo (ajusta según dónde lo tengas)
+# -------------------------------
+# Helpers
+# -------------------------------
+
+sys.path.append(os.path.abspath('.'))
 
 cap = cv2.VideoCapture(video.curl_bicep.curl_bicep1)
 pose_tracker = PoseTracker()

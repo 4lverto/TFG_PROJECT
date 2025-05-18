@@ -1,10 +1,19 @@
+# -------------------------------
+# Requierements
+# -------------------------------
+
 import sys
 import os
-sys.path.append(os.path.abspath('.'))
 
 import cv2
 import numpy as np
 from utils.angulos import calcular_angulo
+
+# -------------------------------
+# Helpers
+# -------------------------------
+
+sys.path.append(os.path.abspath('.'))
 
 # Puntos simulados (ejemplo: cadera, rodilla, tobillo)
 p1 = (250, 300)  # cadera

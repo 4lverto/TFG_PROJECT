@@ -1,7 +1,12 @@
 # core/ejercicios/curl_bicep.py
+# -------------------------------
+# Requierements
+# -------------------------------
+from ..base import EjercicioContador  
 
-from ..base import EjercicioContador
-
+# -------------------------------
+# Helpers
+# -------------------------------
 class CurlBicep(EjercicioContador):
     def __init__(self, lado='derecho'):
         if lado == 'derecho':

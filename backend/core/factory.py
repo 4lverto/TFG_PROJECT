@@ -1,4 +1,7 @@
 # core/ejercicios/factory.py
+# -------------------------------
+# Requierements
+# -------------------------------
 
 from core.ejercicio_enum import EjercicioId
 from core.ejercicios.curl_bicep import CurlBicep
@@ -10,6 +13,9 @@ from core.ejercicios.crunch_abdominal import CrunchAbdominal
 from core.ejercicios.tricep_dip import TricepDip
 from core.ejercicios.elevacion_lateral import ElevacionLateral
 
+# -------------------------------
+# Helpers
+# -------------------------------
 
 def get_ejercicio(nombre: EjercicioId, lado='derecho'):
     if nombre == EjercicioId.CURL_BICEP:

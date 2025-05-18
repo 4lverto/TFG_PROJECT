@@ -1,4 +1,7 @@
 # backend/main.py
+# -------------------------------
+# Requierements
+# -------------------------------
 
 import os
 import re
@@ -13,6 +16,9 @@ from inputs.tipo_entrada_enum import TipoEntrada
 
 from inputs.video_paths import listar_videos_por_ejercicio
 
+# -------------------------------
+# Helpers
+# -------------------------------
 
 # Crear instancia FastAPI
 app = FastAPI(
@@ -46,17 +52,17 @@ class IniciarSesionRequest(BaseModel):
 # Rutas API
 @app.get("/")
 async def root():
-    return {"mensaje": "API del TFG funcionando correctamente 🎯"}
+    return {"mensaje": "API del TFG funcionando correctamente"}
 
 @app.post("/iniciar-ejercicio")
 async def iniciar_ejercicio(request: IniciarSesionRequest):
-    print("📥 Recibido:", request.dict())
+    print("Recibido:", request.dict())
     global ejercicio_actual
 
     if session_manager.sesion_activa():
         return {"error": "Ya hay un ejercicio en curso"}
 
-    print(f"✅ Backend: tipo={request.tipo}, ejercicio={request.nombre_ejercicio}, fuente={request.fuente}")
+    print(f"Backend: tipo={request.tipo}, ejercicio={request.nombre_ejercicio}, fuente={request.fuente}")
 
     ejercicio_actual = request.nombre_ejercicio.value
 

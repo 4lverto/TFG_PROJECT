@@ -1,9 +1,18 @@
+# -------------------------------
+# Requierements
+# -------------------------------
+
 import sys
 import os
-sys.path.append(os.path.abspath('.'))  # Añade la raíz del proyecto a las rutas de importación
 
 from pose_module.pose_tracker import PoseTracker
 import cv2
+
+# -------------------------------
+# Requierements
+# -------------------------------
+
+sys.path.append(os.path.abspath('.'))
 
 # Abrimos la webcam y creamos una instancia de la clase PoseTracker para inicializar el modelo de pose de MediaPipe
 cap = cv2.VideoCapture(0)

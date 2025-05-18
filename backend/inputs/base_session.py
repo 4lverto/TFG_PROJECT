@@ -1,7 +1,14 @@
 # backend/inputs/base_session.py
+# -------------------------------
+# Requierements
+# -------------------------------
 
 from abc import ABC, abstractmethod
 from typing import Optional
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class BaseSession(ABC):
     @abstractmethod

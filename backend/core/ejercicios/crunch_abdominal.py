@@ -1,5 +1,12 @@
 # core/ejercicios/crunch_abdominal.py
+# -------------------------------
+# Requierements
+# -------------------------------
 from ..base import EjercicioContador  
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class CrunchAbdominal(EjercicioContador):
     def __init__(self,lado="derecho"):

@@ -1,5 +1,12 @@
 # core/ejercicios/flexion.py
-from ..base import EjercicioContador
+# -------------------------------
+# Requierements
+# -------------------------------
+from ..base import EjercicioContador  
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class Flexion(EjercicioContador):
     def __init__(self, lado="derecho"):

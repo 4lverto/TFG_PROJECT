@@ -1,5 +1,7 @@
 # backend/inputs/camera_session.py
-
+# -------------------------------
+# Requierements
+# -------------------------------
 import ctypes
 import threading
 import cv2
@@ -9,6 +11,10 @@ import time;
 from pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
 from inputs.base_session import BaseSession
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 def get_screen_height():
     return ctypes.windll.user32.GetSystemMetrics(1)  # Altura de pantalla

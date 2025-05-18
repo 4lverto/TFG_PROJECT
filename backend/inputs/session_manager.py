@@ -1,5 +1,7 @@
 # backend/inputs/session_manager.py
-
+# -------------------------------
+# Requierements
+# -------------------------------
 from typing import Optional
 from urllib import request
 from inputs.base_session import BaseSession
@@ -7,6 +9,10 @@ from inputs.camera_session import CameraSession
 from inputs.video_session import VideoSession
 from datetime import datetime
 from inputs.tipo_entrada_enum import TipoEntrada
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class SessionManager:
     def __init__(self):

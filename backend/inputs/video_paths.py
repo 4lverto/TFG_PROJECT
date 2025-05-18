@@ -1,5 +1,13 @@
+# -------------------------------
+# Requierements
+# -------------------------------
+
 import os
 import re
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 # 📁 Directorio base del proyecto
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))

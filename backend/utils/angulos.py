@@ -1,5 +1,13 @@
+# -------------------------------
+# Requierements
+# -------------------------------
+
 from math import acos, degrees
 import numpy as np
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 def calcular_angulo(p1, p2, p3) -> float:
     a = np.array(p1)

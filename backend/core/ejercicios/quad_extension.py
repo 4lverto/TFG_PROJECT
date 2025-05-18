@@ -1,5 +1,12 @@
 # core/ejercicios/quad_entension.py
+# -------------------------------
+# Requierements
+# -------------------------------
 from ..base import EjercicioContador  
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class QuadExtension(EjercicioContador):
     def __init__(self , lado="derecho"):

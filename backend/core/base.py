@@ -1,7 +1,13 @@
 # core/ejercicios/base.py
-
+# -------------------------------
+# Requierements
+# -------------------------------
 from abc import ABC, abstractmethod
 from utils.angulos import calcular_angulo_landmarks
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class EjercicioContador(ABC):
     def __init__(self, angulo_min, angulo_max, puntos):

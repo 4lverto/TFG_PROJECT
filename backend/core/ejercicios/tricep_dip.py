@@ -1,5 +1,12 @@
 # core/ejercicios/tricep_dip.py
-from ..base import EjercicioContador
+# -------------------------------
+# Requierements
+# -------------------------------
+from ..base import EjercicioContador  
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class TricepDip(EjercicioContador):
     def __init__(lado="derecho"):

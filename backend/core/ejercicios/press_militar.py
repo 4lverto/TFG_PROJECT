@@ -1,5 +1,12 @@
 # core/ejercicios/press_militar.py
-from ..base import EjercicioContador
+# -------------------------------
+# Requierements
+# -------------------------------
+from ..base import EjercicioContador  
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class PressMilitar(EjercicioContador):
     def __init__(self, lado="derecho"):

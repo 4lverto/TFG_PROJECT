@@ -1,5 +1,12 @@
 # core/ejercicios/sentadilla.py
-from ..base import EjercicioContador
+# -------------------------------
+# Requierements
+# -------------------------------
+from ..base import EjercicioContador  
+
+# -------------------------------
+# Helpers
+# -------------------------------
 
 class Sentadilla(EjercicioContador):
     def __init__(self, lado="derecho"):

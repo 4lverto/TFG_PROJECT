@@ -1,11 +1,20 @@
+# -------------------------------
+# Requierements
+# -------------------------------
+
 import sys
 import os
-sys.path.append(os.path.abspath('.'))
 
 import cv2
 from pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
 from backend.inputs import video_paths as videos
+
+# -------------------------------
+# Helpers
+# -------------------------------
+
+sys.path.append(os.path.abspath('.'))
 
 # Argumento: 1 = vídeo, 2 = cámara
 modo = sys.argv[1] if len(sys.argv) > 1 else '1'
@@ -15,14 +24,14 @@ if modo == '1':
     print("🔁 Modo: Reproduciendo vídeo local.")
 elif modo == '2':
     cap = cv2.VideoCapture(0)
-    print("🎥 Modo: Cámara en vivo.")
+    print("Modo: Cámara en vivo.")
 else:
-    print("❌ Argumento no válido. Usa '1' para vídeo o '2' para cámara.")
+    print("Argumento no válido. Usa '1' para vídeo o '2' para cámara.")
     sys.exit(1)
 
 pose_tracker = PoseTracker()
 
-# 🎯 Creamos el contador de ejercicio dinámicamente
+# Creamos el contador de ejercicio dinámicamente
 contador = get_ejercicio("curl_bicep", lado="derecho")
 
 while True:
