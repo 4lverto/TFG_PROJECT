@@ -1,6 +1,6 @@
 # core/ejercicios/factory.py
 
-from core.ejercicios.ejercicio_enum import EjercicioId
+from core.ejercicio_enum import EjercicioId
 from core.ejercicios.curl_bicep import CurlBicep
 from core.ejercicios.sentadilla import Sentadilla
 from core.ejercicios.flexion import Flexion

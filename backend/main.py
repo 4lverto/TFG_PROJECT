@@ -7,13 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 
-from core.ejercicios.ejercicio_enum import EjercicioId
+from core.ejercicio_enum import EjercicioId
 from inputs.session_manager import SessionManager
 from inputs.tipo_entrada_enum import TipoEntrada
 
-# main.py (fragmento)
+from inputs.video_paths import listar_videos_por_ejercicio
 
-from core.ejercicios.ejercicio_enum import EjercicioId
 
 # Crear instancia FastAPI
 app = FastAPI(
@@ -36,9 +35,7 @@ session_manager = SessionManager()
 ejercicio_actual: Optional[str] = None
 historial_ejercicios: List[dict] = []
 
-# Modelos
-# ✅ Versión correcta, que usa Enum
-from core.ejercicios.ejercicio_enum import EjercicioId
+
 
 class IniciarSesionRequest(BaseModel):
     tipo: TipoEntrada 
@@ -106,9 +103,6 @@ async def finalizar_ejercicio():
 async def ver_historial():
     return {"historial": historial_ejercicios}
 
-from core.video_paths import listar_videos_por_ejercicio
-
-from core.ejercicios.ejercicio_enum import EjercicioId
 
 @app.get("/videos-disponibles")
 async def listar_videos_disponibles(ejercicio: EjercicioId = Query(...)):

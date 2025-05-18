@@ -1,5 +1,5 @@
 # core/ejercicios/crunch_abdominal.py
-from .base import EjercicioContador  
+from ..base import EjercicioContador  
 
 class CrunchAbdominal(EjercicioContador):
     def __init__(self,lado="derecho"):

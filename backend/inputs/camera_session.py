@@ -7,7 +7,7 @@ from typing import Optional
 import time;
 
 from pose_module.pose_tracker import PoseTracker
-from core.ejercicios.factory import get_ejercicio
+from core.factory import get_ejercicio
 from inputs.base_session import BaseSession
 
 def get_screen_height():

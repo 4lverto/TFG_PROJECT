@@ -1,5 +1,5 @@
 # core/ejercicios/tricep_dip.py
-from .base import EjercicioContador
+from ..base import EjercicioContador
 
 class TricepDip(EjercicioContador):
     def __init__(lado="derecho"):

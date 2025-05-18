@@ -1,5 +1,5 @@
 # core/ejercicios/sentadilla.py
-from .base import EjercicioContador
+from ..base import EjercicioContador
 
 class Sentadilla(EjercicioContador):
     def __init__(self, lado="derecho"):

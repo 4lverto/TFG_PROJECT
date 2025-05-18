@@ -1,5 +1,5 @@
 # core/ejercicios/elevacion_lateral.py
-from .base import EjercicioContador
+from ..base import EjercicioContador
 
 class ElevacionLateral(EjercicioContador):
     def __init__(self, lado="derecho"):

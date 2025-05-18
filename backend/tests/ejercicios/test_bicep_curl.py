@@ -4,8 +4,8 @@ sys.path.append(os.path.abspath('.'))
 
 import cv2
 from pose_module.pose_tracker import PoseTracker
-from core.ejercicios.factory import get_ejercicio  # 🔥 usamos la fábrica
-from core import video_paths as videos
+from core.factory import get_ejercicio
+from backend.inputs import video_paths as videos
 
 # Argumento: 1 = vídeo, 2 = cámara
 modo = sys.argv[1] if len(sys.argv) > 1 else '1'

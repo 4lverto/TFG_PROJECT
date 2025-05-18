@@ -1,5 +1,5 @@
 # core/ejercicios/press_militar.py
-from .base import EjercicioContador
+from ..base import EjercicioContador
 
 class PressMilitar(EjercicioContador):
     def __init__(self, lado="derecho"):

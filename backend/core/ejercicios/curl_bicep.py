@@ -1,6 +1,6 @@
 # core/ejercicios/curl_bicep.py
 
-from .base import EjercicioContador
+from ..base import EjercicioContador
 
 class CurlBicep(EjercicioContador):
     def __init__(self, lado='derecho'):

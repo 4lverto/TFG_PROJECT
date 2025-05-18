@@ -1,5 +1,5 @@
 # core/ejercicios/quad_entension.py
-from .base import EjercicioContador  
+from ..base import EjercicioContador  
 
 class QuadExtension(EjercicioContador):
     def __init__(self , lado="derecho"):
