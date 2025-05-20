@@ -8,7 +8,7 @@ import cv2
 from typing import Optional
 import time;
 
-from pose_module.pose_tracker import PoseTracker
+from ..pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
 from inputs.entradas.base_session import BaseSession
 
@@ -30,24 +30,24 @@ class CameraSession(BaseSession):
         self.historial_frames = []
 
     def start(self, nombre_ejercicio: str, lado: str = "derecho"):
-        print("🚀 CameraSession.start() invocado")
+        print("CameraSession.start() invocado")
         if self.running:
             return
         
         self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
-            print("❌ Cámara no se pudo abrir")
+            print("Cámara no se pudo abrir")
             raise RuntimeError("No se pudo abrir la cámara")
 
         self.contador = get_ejercicio(nombre_ejercicio,lado)
 
         self.repeticiones = 0
         self.running = True
-        print("🚀 Lanzando hilo de cámara")
-        self.thread = threading.Thread(target=self._loop, daemon=True)
+        print("Lanzando hebra de cámara")
+        self.thread = threading.Thread(target=self.loop, daemon=True)
         self.thread.start()
 
-    def _loop(self):
+    def loop(self):
         pantalla_alto = ctypes.windll.user32.GetSystemMetrics(1)
         nuevo_alto = pantalla_alto - 120
 

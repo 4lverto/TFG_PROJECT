@@ -8,6 +8,7 @@ import { DetalleFrame } from "@/shared/core/domain/resumen-sesion.entity";
 interface Props {
   datos: DetalleFrame[];
 }
+
 function GraficaAngulo({ datos }: Props) {
   // Formateamos los datos para mostrar tiempo relativo (en segundos) y ángulo
   const data = datos.map((frame) => ({

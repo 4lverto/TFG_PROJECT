@@ -1,4 +1,4 @@
-# backend/inputs/session_manager.py
+# inputs/session_manager.py
 # -------------------------------
 # Requierements
 # -------------------------------

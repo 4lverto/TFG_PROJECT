@@ -67,7 +67,7 @@ class PoseTracker:
                     'x': int(landmark.x * width),
                     'y': int(landmark.y * height),
                     'z': landmark.z,
-                    'visibilidad': landmark.visibility
+                    #'visibilidad': landmark.visibility
                 }
         return puntos
     

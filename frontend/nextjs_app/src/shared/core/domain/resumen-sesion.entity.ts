@@ -10,7 +10,7 @@ export interface DetalleFrame {
   angulo: number | null;
   repeticiones: number;
   estado: string;
-  landmarks?: Record<string, Landmark>; // opcional, si en algún momento quieres usarlos
+  landmarks?: Record<string, Landmark>;
 }
 
 export interface ResumenSesion {
@@ -21,5 +21,5 @@ export interface ResumenSesion {
   fin: string;
   duracion_segundos: number;
   duracion_formateada: string;
-  detalles_frame_a_frame?: DetalleFrame[]; // 👈 Aquí lo añadimos
+  detalles_frame_a_frame?: DetalleFrame[];
 }

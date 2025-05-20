@@ -2,7 +2,7 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from abc import ABC, abstractmethod
+from abc import ABC
 from utils.angulos import calcular_angulo_landmarks
 
 # -------------------------------
@@ -30,11 +30,11 @@ class Ejercicio(ABC):
 
         # Frame a frame iremos calculando el ángulo que forman los puntos clave del ejercicio,buscando detectar transiciones.
         angulo = calcular_angulo_landmarks(puntos_detectados, self.id1, self.id2, self.id3)
-        self._detectar_transicion(angulo) # Si se detectara una transición entre arriba y abajo, se agregaría una repetición.
+        self.detectar_transicion(angulo) # Si se detectara una transición entre arriba y abajo, se agregaría una repetición.
         
         return angulo, self.reps
 
-    def _detectar_transicion(self, angulo):
+    def detectar_transicion(self, angulo):
         """
         Detecta cambio de estado y suma repetición si se completa un ciclo (arriba -> abajo -> arriba)
         """

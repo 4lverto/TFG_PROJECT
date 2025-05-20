@@ -6,7 +6,7 @@ import sys
 import os
 
 import cv2
-from pose_module.pose_tracker import PoseTracker
+from inputs.pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
 from inputs.entradas import video_paths as videos
 

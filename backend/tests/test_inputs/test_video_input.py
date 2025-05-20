@@ -5,7 +5,7 @@
 import sys
 import os
 
-from pose_module.pose_tracker import PoseTracker
+from inputs.pose_module.pose_tracker import PoseTracker
 from inputs.entradas import video_paths as video
 import cv2
 

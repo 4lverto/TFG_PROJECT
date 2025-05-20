@@ -34,6 +34,5 @@ def get_ejercicio(nombre: EjercicioId, lado='derecho'):
         return TricepDip(lado=lado)
     elif(nombre == EjercicioId.ELEVACION_LATERAL):
         return ElevacionLateral(lado=lado)
-        
 
     raise ValueError(f"Ejercicio desconocido: {nombre}")

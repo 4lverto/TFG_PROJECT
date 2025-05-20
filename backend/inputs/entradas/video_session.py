@@ -9,7 +9,7 @@ import time
 import ctypes
 from typing import Optional
 
-from pose_module.pose_tracker import PoseTracker
+from ..pose_module.pose_tracker import PoseTracker
 from core.factory import get_ejercicio
 from inputs.entradas.base_session import BaseSession
 
@@ -45,10 +45,10 @@ class VideoSession(BaseSession):
             BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
             fuente = os.path.abspath(os.path.join(BASE_DIR, fuente))
 
-        print(f"📂 Ruta final a abrir: {fuente}")
+        print(f"Ruta final a abrir: {fuente}")
 
         if not os.path.exists(fuente):
-            print("❌ El archivo de vídeo no existe en el sistema.")
+            print("El archivo de vídeo no existe en el sistema.")
             return
 
         self.cap = cv2.VideoCapture(fuente)
@@ -59,10 +59,10 @@ class VideoSession(BaseSession):
 
         self.repeticiones = 0
         self.running = True
-        self.thread = threading.Thread(target=self._loop, daemon=True)
+        self.thread = threading.Thread(target=self.loop, daemon=True)
         self.thread.start()
 
-    def _loop(self):
+    def loop(self):
         pantalla_alto = get_screen_height()
         nuevo_alto = pantalla_alto - 120
 
