@@ -3,7 +3,7 @@
 # Requierements
 # -------------------------------
 from abc import ABC
-from utils.angulos import calcular_angulo_landmarks
+from trackerfit.utils.angulos import calcular_angulo_landmarks
 
 # -------------------------------
 # Helpers

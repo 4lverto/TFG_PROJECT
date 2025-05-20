@@ -2,7 +2,7 @@
 # -------------------------------
 # Requierements
 # -------------------------------
-from ..ejercicio import Ejercicio  
+from trackerfit.ejercicios.base import Ejercicio
 
 # -------------------------------
 # Helpers

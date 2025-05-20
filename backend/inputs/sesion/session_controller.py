@@ -3,8 +3,9 @@
 # -------------------------------
 
 from typing import Optional
-from utils.tipo_entrada_enum import TipoEntrada
-from inputs.sesion.session_manager import SessionManager
+from trackerfit.utils.tipo_entrada_enum import TipoEntrada
+from trackerfit.session.manager import SessionManager
+
 
 # -------------------------------
 # Helpers

@@ -1,4 +1,5 @@
-# core/ejercicios/ejercicio_enum.py
+# trackerfit/utils/ejercicio_enum.py
+
 # -------------------------------
 # Requierements
 # -------------------------------

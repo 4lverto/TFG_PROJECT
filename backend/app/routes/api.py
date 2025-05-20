@@ -6,8 +6,9 @@ from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from typing import Optional, List
 
-from core.ejercicio_enum import EjercicioId
-from utils.tipo_entrada_enum import TipoEntrada
+from trackerfit.utils.ejercicio_enum import EjercicioId
+from trackerfit.utils.tipo_entrada_enum import TipoEntrada
+from trackerfit.session.video_paths import listar_videos_por_ejercicio
 from inputs.sesion.session_controller import (
     iniciar_sesion,
     detener_sesion,
@@ -15,7 +16,6 @@ from inputs.sesion.session_controller import (
     generar_resumen,
     sesion_activa,
 )
-from inputs.entradas.video_paths import listar_videos_por_ejercicio
 
 # -------------------------------
 # Helpers
