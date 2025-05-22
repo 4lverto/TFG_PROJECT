@@ -16,3 +16,4 @@ class QuadExtension(Ejercicio):
             puntos = (23,25,27) # Cadera (izq) = 23, # Rodilla (izq) = 25, Tobillo (izq) = 27
             
         super().__init__(angulo_min=70,angulo_max=160,puntos=puntos)
+        self.umbral_validacion = self.angulo_min

@@ -14,4 +14,5 @@ class CurlBicep(Ejercicio):
         else:
             puntos = (11, 13, 15)
 
-        super().__init__(angulo_min=40, angulo_max=160, puntos=puntos)
+        super().__init__(angulo_min=30, angulo_max=160, puntos=puntos)
+        self.umbral_validacion = self.angulo_min

@@ -16,3 +16,4 @@ class PressMilitar(Ejercicio):
             puntos=(13,11,23) # Codo (izq) = 13, # Hombro (izq) = 11, Cadera (izq) = 23
 
         super().__init__(angulo_min=90,angulo_max=160,puntos=puntos)
+        self.umbral_validacion = self.angulo_min

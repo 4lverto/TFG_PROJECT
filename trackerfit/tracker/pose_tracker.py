@@ -53,6 +53,24 @@ class PoseTracker:
             )
         return frame
     
+    import cv2
+
+    def dibujar_triangulo_con_angulo(self,frame, puntos, id1, id2, id3, angulo, umbral_validacion):
+        p1 = puntos[id1]["x"], puntos[id1]["y"]
+        p2 = puntos[id2]["x"], puntos[id2]["y"]
+        p3 = puntos[id3]["x"], puntos[id3]["y"]
+
+        # Color según validación del ángulo
+        color = (0, 255, 0) if angulo < umbral_validacion else (0, 0, 255)  # verde o rojo
+
+        # Dibujar líneas del triángulo
+        cv2.line(frame, p1, p2, color, 2)
+        cv2.line(frame, p2, p3, color, 2)
+        cv2.line(frame, p3, p1, color, 2)
+
+        # Mostrar valor del ángulo
+        cv2.putText(frame, f"{int(angulo)}", p2, cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
+
     
     ''' Extraemos las coordenadas de los landmarks
     Convierto los landmarks a coordenadas reales en píxeles según el tamaño del frame (alto,ancho),

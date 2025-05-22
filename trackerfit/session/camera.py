@@ -30,13 +30,12 @@ class CameraSession(BaseSession):
         self.historial_frames = []
 
     def start(self, nombre_ejercicio: str, lado: str = "derecho"):
-        print("CameraSession.start() invocado")
         if self.running:
             return
         
         self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
-            print("Cámara no se pudo abrir")
+            print("Camara no se pudo abrir")
             raise RuntimeError("No se pudo abrir la cámara")
 
         self.contador = get_ejercicio(nombre_ejercicio,lado)
@@ -65,6 +64,18 @@ class CameraSession(BaseSession):
 
             if puntos and self.contador:
                 angulo, reps = self.contador.actualizar(puntos)
+                
+                #Dibujo del triángulo representativo del ángulo
+                umbral = self.contador.umbral_validacion
+                self.pose_tracker.dibujar_triangulo_con_angulo(
+                    frame, puntos,
+                    self.contador.id1,
+                    self.contador.id2,
+                    self.contador.id3,
+                    angulo,
+                    umbral
+                )
+                
                 self.repeticiones = reps
                 timestamp = time.time()
                 estado = "activo" if self.contador.arriba or self.contador.abajo else "reposo"

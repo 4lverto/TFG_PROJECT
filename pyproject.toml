@@ -11,7 +11,7 @@ requires-python = ">=3.8"
 license = { text = "MIT" }
 
 authors = [
-  { name = "Alberto Ortega", email = "tuemail@ugr.es" }
+  { name = "Alberto Ortega", email = "kesolesito@gmail.com" }
 ]
 
 dependencies = [

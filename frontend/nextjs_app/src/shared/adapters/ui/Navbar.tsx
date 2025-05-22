@@ -14,7 +14,6 @@ function Navbar() {
 
       <div className="space-x-4 text-sm">
         <Link href="/manual" className="hover:text-blue-300 transition">🎯 Manual</Link>
-        <Link href="/autodeteccion" className="hover:text-blue-300 transition">🧠 Autodetección</Link>
       </div>
     </nav>
   );

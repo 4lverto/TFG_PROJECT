@@ -39,7 +39,7 @@ class VideoSession(BaseSession):
         if fuente is None:
             raise ValueError("Se debe proporcionar la ruta del archivo de vídeo.")
 
-        print(f"🔍 Ruta inicial: {fuente}")
+        print(f"Ruta inicial: {fuente}")
 
         fuente = fuente.strip()
         if not os.path.isabs(fuente):
@@ -68,8 +68,8 @@ class VideoSession(BaseSession):
         nuevo_alto = pantalla_alto - 120
 
         # Crear ventana solo una vez
-        cv2.namedWindow("Vídeo - Seguimiento", cv2.WINDOW_NORMAL)
-        cv2.moveWindow("Vídeo - Seguimiento", 100, 100)
+        cv2.namedWindow("Video - Seguimiento", cv2.WINDOW_NORMAL)
+        cv2.moveWindow("Video - Seguimiento", 100, 100)
 
         while self.running and self.cap.isOpened():
             ret, frame = self.cap.read()
@@ -84,6 +84,17 @@ class VideoSession(BaseSession):
             if puntos and self.contador:
                 angulo, reps = self.contador.actualizar(puntos)
                 self.repeticiones = reps
+                
+                #Dibujo del triángulo representativo del ángulo
+                umbral = self.contador.umbral_validacion
+                self.pose_tracker.dibujar_triangulo_con_angulo(
+                    frame, puntos,
+                    self.contador.id1,
+                    self.contador.id2,
+                    self.contador.id3,
+                    angulo,
+                    umbral
+                )
 
                 timestamp = time.time()
                 estado = "activo" if self.contador.arriba or self.contador.abajo else "reposo"

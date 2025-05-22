@@ -22,6 +22,7 @@ class Ejercicio(ABC):
         self.angulo_min = angulo_min
         self.angulo_max = angulo_max
         self.id1, self.id2, self.id3 = puntos
+        self.umbral_validacion = 90 # Valor por defecto
 
     def actualizar(self, puntos_detectados):
         # Si no tenemos todos los puntos necesarios, ignoramos frame

@@ -9,10 +9,11 @@ from trackerfit.ejercicios.base import Ejercicio
 # -------------------------------
 
 class TricepDip(Ejercicio):
-    def __init__(lado="derecho"):
+    def __init__(self,lado="derecho"):
         if(lado=="derecho"):
             puntos = (12,14,16) # Hombro (der) = 12 , Codo (der) = 14 y Muñeca (der) = 16
         else:
             puntos = (11,13,15) # Hombro (der) = 11 , Codo (der) = 13 y Muñeca (der) = 15
             
         super().__init__(angulo_min=90,angulo_max=160,puntos=puntos)
+        self.umbral_validacion = self.angulo_min
