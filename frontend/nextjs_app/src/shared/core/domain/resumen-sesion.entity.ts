@@ -1,11 +1,15 @@
-export interface Landmark {
+/////////////////////
+// Helpers
+/////////////////////
+
+interface Landmark {
   x: number;
   y: number;
   z: number;
   visibilidad: number;
 }
 
-export interface DetalleFrame {
+interface DetalleFrame {
   timestamp: number;
   angulo: number | null;
   repeticiones: number;
@@ -13,7 +17,7 @@ export interface DetalleFrame {
   landmarks?: Record<string, Landmark>;
 }
 
-export interface ResumenSesion {
+interface ResumenSesion {
   ejercicio: string;
   tipo_entrada: string;
   repeticiones: number;
@@ -23,3 +27,9 @@ export interface ResumenSesion {
   duracion_formateada: string;
   detalles_frame_a_frame?: DetalleFrame[];
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
+
+export type {Landmark, DetalleFrame, ResumenSesion};

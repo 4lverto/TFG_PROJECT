@@ -5,12 +5,15 @@ import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
 import {GraficaAngulo} from "@/shared/adapters/ui/GraficaAngulo";
 import jsPDF from "jspdf";
 
+
+/////////////////////
+// Helpers
+/////////////////////
+
 interface Props {
   resumen: ResumenSesion;
   onVolver: () => void;
 }
-
-
 
 export default function ResumenDeSesion({ resumen, onVolver }: Props) {
   const nombreEjercicio =
@@ -151,3 +154,8 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
     </div>
   );
 }
+
+
+/////////////////////
+// Public Interface
+/////////////////////

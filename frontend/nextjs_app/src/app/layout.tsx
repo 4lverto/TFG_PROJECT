@@ -1,6 +1,14 @@
+/////////////////////
+// Requirements
+/////////////////////
+
 import {Header} from "@/shared/adapters/ui/Header";
 import {Footer} from "@/shared/adapters/ui/Footer";
 import "./globals.css";
+
+/////////////////////
+// Helpers
+/////////////////////
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,7 +1,14 @@
-// shared/adapters/ui/Navbar.tsx
-
 "use client";
+
+/////////////////////
+// Requirements
+/////////////////////
+
 import Link from "next/link";
+
+/////////////////////
+// Helpers
+/////////////////////
 
 function Navbar() {
   return (
@@ -18,5 +25,9 @@ function Navbar() {
     </nav>
   );
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { Navbar };

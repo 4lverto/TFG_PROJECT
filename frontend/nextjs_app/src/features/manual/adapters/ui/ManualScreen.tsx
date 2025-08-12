@@ -1,4 +1,7 @@
 'use client';
+/////////////////////
+// Requirements
+/////////////////////
 
 import React, { useState, useEffect, ChangeEvent } from "react";
 import {
@@ -11,7 +14,7 @@ import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
 import ResumenDeSesion from "./components/ResumenDeSesion";
 import { TIPO_ENTRADA } from "@/shared/core/enums/tipo_entrada.enum";
 
-export default function ManualScreen() {
+function ManualScreen() {
   const [tipoEntrada, setTipoEntrada] = useState<"camera" | "video">("camera");
   const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState("curl_bicep");
   const [videosDisponibles, setVideosDisponibles] = useState<string[]>([]);
@@ -190,3 +193,9 @@ export default function ManualScreen() {
     </main>
   );
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
+
+export { ManualScreen };

@@ -1,14 +1,14 @@
-# app/routes/api.py
 # -------------------------------
 # Requierements
 # -------------------------------
 from fastapi import APIRouter, Query
+from pathlib import Path
 from pydantic import BaseModel
 from typing import Optional, List
 
 from trackerfit.utils.ejercicio_enum import EjercicioId
 from trackerfit.utils.tipo_entrada_enum import TipoEntrada
-from trackerfit.session.video_paths import listar_videos_por_ejercicio
+from app.utils.video_paths import listar_videos_por_ejercicio
 from inputs.sesion.session_controller import (
     iniciar_sesion,
     detener_sesion,
@@ -42,10 +42,20 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
     ejercicio_actual = request.nombre_ejercicio.value
 
     try:
+        fuente_abs = None
+        if request.tipo == TipoEntrada.VIDEO and request.fuente:
+            p = Path(request.fuente)
+            if not p.is_absolute():
+                # __file__ = .../app/routes/api.py
+                # parents[3] -> TFG_PROJECT (raíz), donde está "recursos/"
+                project_root = Path(__file__).resolve().parents[3]
+                p = (project_root / request.fuente).resolve()
+            fuente_abs = str(p)
+
         iniciar_sesion(
-            tipo=request.tipo.value,
+            tipo=request.tipo,  # pasa el enum, el controller ya hace pass-through al SessionManager
             nombre_ejercicio=request.nombre_ejercicio,
-            fuente=request.fuente,
+            fuente=fuente_abs,  # <-- usa la ruta ABSOLUTA correcta
             lado=request.lado,
         )
     except Exception as e:

@@ -1,8 +1,13 @@
-// src/shared/adapters/infrastructure/api.ts
+/////////////////////
+// Requirements
+/////////////////////
 
 import { IniciarSesionEntity } from "@/shared/core/domain/iniciar-sesion.entity";
+import { BACKEND_URL } from "@/shared/core/constants";
 
-const BACKEND_URL = 'http://localhost:8000';
+/////////////////////
+// Helpers
+/////////////////////
 
 async function iniciarSesion(tipo: string, nombre: string, fuente?: string, lado: string = "derecho" ) {
   
@@ -56,5 +61,9 @@ async function verHistorial() {
   }
   return response.json();
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { iniciarSesion, estadoEjercicio, finalizarEjercicio, verHistorial }

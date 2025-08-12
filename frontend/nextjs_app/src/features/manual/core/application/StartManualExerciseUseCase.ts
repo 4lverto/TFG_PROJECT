@@ -1,5 +1,5 @@
 /////////////////////
-// Requierements
+// Requirements
 /////////////////////
 
 import { iniciarSesion } from "@/shared/adapters/infrastructure/api";

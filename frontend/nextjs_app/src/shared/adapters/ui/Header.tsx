@@ -1,6 +1,12 @@
-// shared/adapters/ui/Header.tsx
+/////////////////////
+// Requirements
+/////////////////////
 
 import {Navbar} from "./Navbar";
+
+/////////////////////
+// Helpers
+/////////////////////
 
 function Header() {
   return (
@@ -9,5 +15,9 @@ function Header() {
     </header>
   );
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { Header };

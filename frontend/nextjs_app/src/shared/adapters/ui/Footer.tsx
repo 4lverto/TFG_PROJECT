@@ -1,4 +1,6 @@
-// shared/adapters/ui/Footer.tsx
+/////////////////////
+// Helpers
+/////////////////////
 
 function Footer() {
   return (
@@ -7,5 +9,9 @@ function Footer() {
     </footer>
   );
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { Footer };

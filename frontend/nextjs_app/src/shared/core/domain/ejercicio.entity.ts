@@ -1,6 +1,8 @@
-// src/shared/core/domain/ejercicio.entity.ts
+/////////////////////
+// Helpers
+/////////////////////
 
-export type EjercicioId =
+type EjercicioId =
   | "curl_bicep"
   | "sentadilla"
   | "flexion"
@@ -11,14 +13,14 @@ export type EjercicioId =
   | "elevacion_lateral"
   ;
 
-export interface Ejercicio {
+interface Ejercicio {
   id: EjercicioId;
   nombre: string;
   descripcion?: string;
   usaLado?: true;
 }
 
-export const EJERCICIOS: Ejercicio[] = [
+const EJERCICIOS: Ejercicio[] = [
   {
     id: "curl_bicep",
     nombre: "Curl de Bíceps",
@@ -64,3 +66,10 @@ export const EJERCICIOS: Ejercicio[] = [
     usaLado: true,
   }
 ];
+
+/////////////////////
+// Public Interface
+/////////////////////
+
+export type { Ejercicio, EjercicioId};
+export { EJERCICIOS };

@@ -1,7 +1,15 @@
 'use client';
 
+/////////////////////
+// Requirements
+/////////////////////
+
 import { useRouter } from 'next/navigation';
 import React from 'react';
+
+/////////////////////
+// Helpers
+/////////////////////
 
 export default function HomePage() {
   const router = useRouter();

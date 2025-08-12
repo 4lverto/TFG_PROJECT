@@ -2,14 +2,10 @@
 // Helpers
 /////////////////////
 
-const TIPO_ENTRADA = {
-  CAMERA: "camera",
-  VIDEO: "video"
-} as const;
-
+const BACKEND_URL = 'http://localhost:8000';
 
 /////////////////////
 // Public Interface
 /////////////////////
 
-export { TIPO_ENTRADA }
+export { BACKEND_URL};

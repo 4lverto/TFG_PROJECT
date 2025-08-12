@@ -1,15 +1,21 @@
-// shared/adapters/ui/GraficaAngulo.tsx
-
 "use client";
+
+/////////////////////
+// Requirements
+/////////////////////
 
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { DetalleFrame } from "@/shared/core/domain/resumen-sesion.entity";
 
-interface Props {
+/////////////////////
+// Helpers
+/////////////////////
+
+interface GraficaAnguloProps {
   datos: DetalleFrame[];
 }
 
-function GraficaAngulo({ datos }: Props) {
+function GraficaAngulo({ datos }: GraficaAnguloProps) {
   // Formateamos los datos para mostrar tiempo relativo (en segundos) y ángulo
   const data = datos.map((frame) => ({
     tiempo: ((frame.timestamp - datos[0].timestamp)).toFixed(2), // segundos relativos
@@ -32,5 +38,8 @@ function GraficaAngulo({ datos }: Props) {
   );
 }
 
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { GraficaAngulo };
