@@ -4,7 +4,7 @@
 
 function Footer() {
   return (
-    <footer className="bg-gray-800 text-white text-sm text-center py-4 mt-auto w-full fixed bottom-0 z-50">
+    <footer className="mt-auto w-full text-center py-4 fixed bottom-0 text-sm bg-gray-800 text-white">
       <p>© 2025 Alberto Ortega - Universidad de Granada</p>
     </footer>
   );

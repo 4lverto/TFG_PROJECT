@@ -24,7 +24,7 @@ function GraficaAngulo({ datos }: GraficaAnguloProps) {
 
   return (
     <div className="w-full h-64 bg-white rounded shadow-md p-4 mt-6">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">📈 Evolución del Ángulo</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">📈Evolución del ángulo durante la sesión</h3>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart data={data}>
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />

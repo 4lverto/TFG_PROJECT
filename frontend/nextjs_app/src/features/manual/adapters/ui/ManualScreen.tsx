@@ -3,97 +3,34 @@
 // Requirements
 /////////////////////
 
-import React, { useState, useEffect, ChangeEvent } from "react";
-import {
-  iniciarSesion,
-  estadoEjercicio,
-  finalizarEjercicio,
-} from "@/shared/adapters/infrastructure/api";
+import React, {  } from "react";
 import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
-import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
 import ResumenDeSesion from "./components/ResumenDeSesion";
-import { TIPO_ENTRADA } from "@/shared/core/enums/tipo_entrada.enum";
+import { useManualScreen } from "./hooks/sesion_ejercicio.hook";
 
 function ManualScreen() {
-  const [tipoEntrada, setTipoEntrada] = useState<"camera" | "video">("camera");
-  const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState("curl_bicep");
-  const [videosDisponibles, setVideosDisponibles] = useState<string[]>([]);
-  const [videoSeleccionado, setVideoSeleccionado] = useState<string>("");
-  const [ejercicioActivo, setEjercicioActivo] = useState(false);
-  const [mensaje, setMensaje] = useState("");
-  const [repeticiones, setRepeticiones] = useState(0);
-  const [resumen, setResumen] = useState<ResumenSesion | null>(null);
-  const [lado,setLado] = useState("derecho");
 
-  const handleTipoEntradaChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setTipoEntrada(e.target.value as "camera" | "video");
-  };
-
-  const handleIniciarEjercicio = async () => {
-    try {
-      setResumen(null);
-      setMensaje("⏳ Iniciando sesión...");
-
-      if (tipoEntrada === TIPO_ENTRADA.CAMERA) {
-        await iniciarSesion(TIPO_ENTRADA.CAMERA, ejercicioSeleccionado.trim(),undefined,lado);
-      } else {
-        await iniciarSesion(TIPO_ENTRADA.VIDEO, ejercicioSeleccionado.trim(), videoSeleccionado,lado);
-      }
-
-      setEjercicioActivo(true);
-      setMensaje("✅ Ejercicio iniciado correctamente");
-    } catch (error) {
-      console.error(error);
-      setMensaje("❌ Error al iniciar el ejercicio");
-    }
-  };
-
-
-  const handleFinalizar = async () => {
-    try {
-      const response = await finalizarEjercicio();
-      setResumen(response.resumen);
-      setMensaje(response.mensaje);
-      setEjercicioActivo(false);
-    } catch (error) {
-      console.error(error);
-      setMensaje("❌ Error al finalizar el ejercicio");
-    }
-  };
-
-  useEffect(() => {
-    if (tipoEntrada === TIPO_ENTRADA.VIDEO) {
-      const fetchVideos = async () => {
-        console.log("EJERCICIO ENVIADO:", JSON.stringify(ejercicioSeleccionado));
-        try {
-          const res = await fetch(`http://localhost:8000/videos-disponibles?ejercicio=${ejercicioSeleccionado}`);
-          console.log(res);
-          const data = await res.json();
-          setVideosDisponibles(data.videos);
-          setVideoSeleccionado(data.videos[0] || "");
-        } catch (error) {
-          console.error("❌ Error al obtener vídeos:", error);
-          setVideosDisponibles([]);
-        }
-      };
-      fetchVideos();
-    }
-  }, [ejercicioSeleccionado, tipoEntrada]);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (ejercicioActivo) {
-      interval = setInterval(async () => {
-        try {
-          const estado = await estadoEjercicio();
-          setRepeticiones(estado.repeticiones);
-        } catch (error) {
-          console.error(error);
-        }
-      }, 2000);
-    }
-    return () => clearInterval(interval);
-  }, [ejercicioActivo]);
+  const {
+    // estado
+    tipoEntrada,
+    ejercicioSeleccionado,
+    videosDisponibles,
+    videoSeleccionado,
+    ejercicioActivo,
+    mensaje,
+    repeticiones,
+    resumen,
+    lado,
+    selectedExercise,
+    // handlers
+    setEjercicioSeleccionado,
+    setVideoSeleccionado,
+    setResumen,
+    setLado,
+    handleTipoEntradaChange,
+    handleIniciarEjercicio,
+    handleFinalizar,
+  } = useManualScreen();
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
@@ -144,17 +81,21 @@ function ManualScreen() {
                 </option>
               ))}
             </select>
-            
-              {EJERCICIOS.find((ej) => ej.id === ejercicioSeleccionado)?.usaLado && (
-                <>
-                  <label className="text-lg font-semibold text-gray-700"> ¿Con qué lado del cuerpo trabajarás? </label>
-                  <select value={lado} onChange={(e) => setLado(e.target.value)}
-                    className="p-2 rounded border border-gray-300">
-                      <option value="derecho">Derecho</option>
-                      <option value="izquierdo">Izquierdo</option>
-                  </select>
-                </>
-              )}
+
+            {EJERCICIOS.find((ej) => ej.id === ejercicioSeleccionado)?.usaLado && (
+              <>
+                <label className="text-lg font-semibold text-gray-700"> ¿Con qué lado del cuerpo trabajarás? </label>
+                <select
+                  value={lado}
+                  onChange={(e) => setLado(e.target.value as "derecho" | "izquierdo")}
+                  className="p-2 rounded border border-gray-300"
+                >
+                  <option value="derecho">Derecho</option>
+                  <option value="izquierdo">Izquierdo</option>
+                </select>
+
+              </>
+            )}
 
             {tipoEntrada === "video" && (
               <>

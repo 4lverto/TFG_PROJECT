@@ -2,7 +2,7 @@
 import React from "react";
 import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
 import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
-import {GraficaAngulo} from "@/shared/adapters/ui/GraficaAngulo";
+import { GraficaAngulo } from "@/features/manual/adapters/ui/components/GraficaAngulo";
 import jsPDF from "jspdf";
 
 
@@ -27,26 +27,111 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
 
 
   const handleExportarPDF = () => {
-    const doc = new jsPDF();
-  
-    doc.setFontSize(18);
-    doc.text("Resumen del Ejercicio", 14, 20);
-  
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 15;
+    let y = 20;
+
+    // TÍTULO (centrado, negrita y subrayado)
+    const titulo = "Resumen del Ejercicio";
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text(titulo, pageWidth / 2, y, { align: "center" });
+
+    const titleWidth = doc.getTextWidth(titulo);
+    doc.setLineWidth(0.6);
+    doc.line(
+      (pageWidth - titleWidth) / 2,
+      y + 2,
+      (pageWidth + titleWidth) / 2,
+      y + 2
+    );
+
+    y += 12;
+
+    // TARJETA DE DATOS
+    const cardX = margin;
+    const cardW = pageWidth - margin * 2;
+    const cardY = y;
+    const cardH = 70; // ajusta si añades más filas
+
+    doc.setDrawColor(180);
+    doc.setFillColor(245, 245, 245); // fondo suave
+    doc.roundedRect(cardX, cardY, cardW, cardH, 3, 3, "FD");
+
+    y += 10;
+
+    // Filas (etiqueta / valor)
+    const rows: Array<[string, string | number]> = [
+      ["Fecha", fecha],
+      ["Ejercicio", nombreEjercicio],
+      ["Tipo de entrada", tipoEntradaLegible],
+      ["Repeticiones", resumen.repeticiones],
+      ["Inicio", horaInicio],
+      ["Fin", horaFin],
+      ["Duración", duracion],
+    ];
+
+    const labelX = cardX + 8;
+    const valueX = cardX + 65; // separa columnas (ajusta si lo ves muy pegado)
+    const lineHeight = 8;
+
+    doc.setTextColor(0);
     doc.setFontSize(12);
-    doc.text(`Fecha: ${fecha}`, 14, 35);
-    doc.text(`Ejercicio: ${nombreEjercicio}`, 14, 45);
-    doc.text(`Tipo de entrada: ${tipoEntradaLegible}`, 14, 55);
-    doc.text(`Repeticiones: ${resumen.repeticiones}`, 14, 65);
-    doc.text(`Inicio: ${horaInicio}`, 14, 75);
-    doc.text(`Fin: ${horaFin}`, 14, 85);
-    doc.text(`Duración: ${duracion}`, 14, 95);
-  
-    doc.save(`resumen_${resumen.ejercicio}_${fecha.replace(/\//g, "-")}.pdf`);
+
+    rows.forEach(([label, value], idx) => {
+      // Etiqueta en negrita
+      doc.setFont("helvetica", "bold");
+      doc.text(`${label}:`, labelX, y);
+
+      // Valor en normal
+      doc.setFont("helvetica", "normal");
+      doc.text(String(value ?? ""), valueX, y);
+
+      // Línea separadora tenue (entre filas)
+      if (idx < rows.length - 1) {
+        doc.setDrawColor(220);
+        doc.setLineWidth(0.2);
+        doc.line(cardX + 6, y + 2, cardX + cardW - 6, y + 2);
+      }
+
+      y += lineHeight;
+    });
+
+    // PIE DE PÁGINA
+    const addFooter = () => {
+      const footY = doc.internal.pageSize.getHeight() - 10;
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(120);
+      doc.text(
+        `Generado: ${new Date().toLocaleString()}`,
+        margin,
+        footY
+      );
+      doc.text(
+        `Página 1 de 1`,
+        pageWidth - margin,
+        footY,
+        { align: "right" }
+      );
+    };
+
+    addFooter();
+
+    // GUARDAR
+    const safeFecha = String(fecha).replace(/[\\/:*?"<>|]/g, "-");
+    const safeEjercicio = String(resumen.ejercicio || nombreEjercicio)
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[\\/:*?"<>|]/g, "-");
+
+    doc.save(`resumen_${safeEjercicio}_${safeFecha}.pdf`);
   };
 
   const handleExportarCSV = () => {
     const fecha = new Date(resumen.inicio).toLocaleDateString("es-ES");
-  
+
     const encabezados = [
       "Fecha",
       "Ejercicio",
@@ -56,7 +141,7 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
       "Fin",
       "Duracion"
     ];
-  
+
     const fila = [
       fecha,
       nombreEjercicio,
@@ -66,20 +151,20 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
       horaFin,
       duracion,
     ];
-  
+
     const contenido = [encabezados, fila]
       .map((fila) => fila.map(valor => `"${valor}"`).join(","))
       .join("\n");
-  
+
     const blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-  
+
     link.setAttribute("href", url);
     link.setAttribute("download", `resumen_${resumen.ejercicio}_${fecha.replace(/\//g, "-")}.csv`);
     link.click();
   };
-  
+
   const handleExportarCSVDetallado = () => {
     if (!resumen.detalles_frame_a_frame) return;
 
@@ -123,21 +208,21 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
       <button
         onClick={handleExportarPDF}
         className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
-        >
+      >
         📄 Exportar como PDF
       </button>
 
       <button
-          onClick={handleExportarCSV}
-          className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
-          >
-          📄 Exportar como CSV
+        onClick={handleExportarCSV}
+        className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+      >
+        📄 Exportar como CSV
       </button>
 
       <button
         onClick={handleExportarCSVDetallado}
         className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
-        >
+      >
         📈 Exportar datos detallados (CSV)
       </button>
 

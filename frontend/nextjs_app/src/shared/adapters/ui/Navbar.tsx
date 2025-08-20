@@ -15,12 +15,12 @@ function Navbar() {
     <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
       <Link href="/">
         <span className="text-xl font-bold cursor-pointer hover:text-blue-400 transition">
-          🏠 TFG - MediaPipe
+          🏠 Inicio
         </span>
       </Link>
 
-      <div className="space-x-4 text-sm">
-        <Link href="/manual" className="hover:text-blue-300 transition">🎯 Manual</Link>
+      <div className="text-md">
+        <Link href="/manual" className="font-bold hover:text-blue-400 transition">🏋Iniciar ejercicio</Link>
       </div>
     </nav>
   );
