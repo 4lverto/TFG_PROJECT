@@ -5,7 +5,7 @@
 /////////////////////
 
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { DetalleFrame } from "@/shared/core/domain/resumen-sesion.entity";
+import { DetalleFrame } from "@/shared/core/domain/resumen_sesion.entity";
 
 /////////////////////
 // Helpers

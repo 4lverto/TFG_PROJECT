@@ -3,12 +3,12 @@
 // Requirements
 /////////////////////
 
-import React, {  } from "react";
-import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
+import React from "react";
+import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 import ResumenDeSesion from "./components/ResumenDeSesion";
-import { useManualScreen } from "./hooks/sesion_ejercicio.hook";
+import { useManualScreen } from "./hooks/ejercicio_manual.hook";
 
-function ManualScreen() {
+function EjercicioManual() {
 
   const {
     // estado
@@ -21,7 +21,6 @@ function ManualScreen() {
     repeticiones,
     resumen,
     lado,
-    selectedExercise,
     // handlers
     setEjercicioSeleccionado,
     setVideoSeleccionado,
@@ -75,14 +74,14 @@ function ManualScreen() {
               onChange={(e) => setEjercicioSeleccionado(e.target.value)}
               className="p-2 rounded border border-gray-300"
             >
-              {EJERCICIOS.map((ej) => (
+              {EjerciciosRegistrados.map((ej) => (
                 <option key={ej.id} value={ej.id}>
                   {ej.nombre}
                 </option>
               ))}
             </select>
 
-            {EJERCICIOS.find((ej) => ej.id === ejercicioSeleccionado)?.usaLado && (
+            {EjerciciosRegistrados.find((ej) => ej.id === ejercicioSeleccionado)?.usaLado && (
               <>
                 <label className="text-lg font-semibold text-gray-700"> ¿Con qué lado del cuerpo trabajarás? </label>
                 <select
@@ -139,4 +138,4 @@ function ManualScreen() {
 // Public Interface
 /////////////////////
 
-export { ManualScreen };
+export { EjercicioManual };

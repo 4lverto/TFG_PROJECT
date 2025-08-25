@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, ChangeEvent } from "react";
-import {
-  iniciarSesion,
-  estadoEjercicio,
-  finalizarEjercicio,
-} from "@/shared/adapters/infrastructure/api";
-import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
-import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
-import { TIPO_ENTRADA } from "@/shared/core/enums/tipo_entrada.enum";
+import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
+import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
+import { iniciarSesionEjercicioManualUseCase } from "../../infrastructure/di/use_cases/iniciar_ejercicio_manual.use_case.di";
+import { finalizarEjercicioManualUseCase } from "../../infrastructure/di/use_cases/finalizar_ejercicio_manual.use_case.di";
+import { obtenerRepeticionesEjercicioManualUseCase } from "../../infrastructure/di/use_cases/obtener_ejercicio_manual.use_case.di";
+import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 
 type TipoEntradaStr = "camera" | "video";
 
@@ -31,7 +29,7 @@ function useManualScreen() {
   const abortVideosRef = useRef<AbortController | null>(null);
 
   const selectedExercise = useMemo(
-    () => EJERCICIOS.find((e) => e.id === ejercicioSeleccionado),
+    () => EjerciciosRegistrados.find((e) => e.id === ejercicioSeleccionado),
     [ejercicioSeleccionado]
   );
 
@@ -45,12 +43,12 @@ function useManualScreen() {
       setMensaje("⏳ Iniciando sesión...");
 
       const tipo =
-        tipoEntrada === "camera" ? TIPO_ENTRADA.CAMERA : TIPO_ENTRADA.VIDEO;
+        tipoEntrada === "camera" ? TipoEntradaEnum.CAMERA : TipoEntradaEnum.VIDEO;
 
-      await iniciarSesion(
+      await iniciarSesionEjercicioManualUseCase.execute(
         tipo,
         ejercicioSeleccionado.trim(),
-        tipo === TIPO_ENTRADA.VIDEO ? videoSeleccionado : undefined,
+        tipo === TipoEntradaEnum.VIDEO ? videoSeleccionado : undefined,
         lado
       );
 
@@ -65,7 +63,7 @@ function useManualScreen() {
 
   const handleFinalizar = async () => {
     try {
-      const response = await finalizarEjercicio();
+      const response = await finalizarEjercicioManualUseCase.execute();
       setResumen(response.resumen);
       setMensaje(response.mensaje);
       setEjercicioActivo(false);
@@ -118,8 +116,8 @@ function useManualScreen() {
     }
     pollRef.current = setInterval(async () => {
       try {
-        const estado = await estadoEjercicio();
-        setRepeticiones(estado.repeticiones);
+        const repeticiones = await obtenerRepeticionesEjercicioManualUseCase.execute();
+        setRepeticiones(repeticiones);
       } catch (error) {
         console.error(error);
       }

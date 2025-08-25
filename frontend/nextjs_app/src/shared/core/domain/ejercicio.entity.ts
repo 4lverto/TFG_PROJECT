@@ -7,9 +7,9 @@ type EjercicioId =
   | "sentadilla"
   | "flexion"
   | "press_militar"
-  | "quad_extension"
+  | "extension_cuadricep"
   | "crunch_abdominal"
-  | "tricep_dip"
+  | "dip_tricep"
   | "elevacion_lateral"
   ;
 
@@ -20,7 +20,7 @@ interface Ejercicio {
   usaLado?: true;
 }
 
-const EJERCICIOS: Ejercicio[] = [
+const EjerciciosRegistrados: Ejercicio[] = [
   {
     id: "curl_bicep",
     nombre: "Curl de Bíceps",
@@ -39,12 +39,12 @@ const EJERCICIOS: Ejercicio[] = [
   },
   {
     id: "press_militar",
-    nombre: "Plancha",
+    nombre: "Press Militar",
     descripcion: "Ejercicio para trabajo de hombro.",
     usaLado: true,
   },
   {
-    id: "quad_extension",
+    id: "extension_cuadricep",
     nombre: "Extensión de Cuadriceps",
     descripcion: "Trabajo de cuadricep",
     usaLado: true,
@@ -55,8 +55,8 @@ const EJERCICIOS: Ejercicio[] = [
     descripcion: "Trabajo de abdominal con las rodillas flexionadas",
   },
   {
-    id: "tricep_dip",
-    nombre: "Tricep Dip",
+    id: "dip_tricep",
+    nombre: "Dips de Tricep",
     descripcion: "Trabajo de tricep realizable de muy variadas maneras"
   },
   {
@@ -72,4 +72,4 @@ const EJERCICIOS: Ejercicio[] = [
 /////////////////////
 
 export type { Ejercicio, EjercicioId};
-export { EJERCICIOS };
+export { EjerciciosRegistrados };

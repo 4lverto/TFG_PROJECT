@@ -2,7 +2,7 @@
 // Requirements
 /////////////////////
 
-import { ManualScreen } from "@/features/manual/adapters/ui/ManualScreen";
+import { EjercicioManual } from "@/features/manual/adapters/ui/ejercicio_manual";
 
 /////////////////////
 // Helpers
@@ -10,7 +10,7 @@ import { ManualScreen } from "@/features/manual/adapters/ui/ManualScreen";
 
 export default function ManualPage() {
   return (
-    <ManualScreen />
+    <EjercicioManual />
   );
 }
 

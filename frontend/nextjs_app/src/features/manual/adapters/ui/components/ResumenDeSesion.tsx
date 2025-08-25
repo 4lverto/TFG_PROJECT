@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { EJERCICIOS } from "@/shared/core/domain/ejercicio.entity";
-import { ResumenSesion } from "@/shared/core/domain/resumen-sesion.entity";
+import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
+import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
 import { GraficaAngulo } from "@/features/manual/adapters/ui/components/GraficaAngulo";
 import jsPDF from "jspdf";
 
@@ -17,7 +17,7 @@ interface Props {
 
 export default function ResumenDeSesion({ resumen, onVolver }: Props) {
   const nombreEjercicio =
-    EJERCICIOS.find((e) => e.id === resumen.ejercicio)?.nombre || resumen.ejercicio;
+    EjerciciosRegistrados.find((e) => e.id === resumen.ejercicio)?.nombre || resumen.ejercicio;
 
   const tipoEntradaLegible = resumen.tipo_entrada === "camera" ? "Cámara" : "Vídeo";
   const fecha = new Date(resumen.inicio).toLocaleDateString("es-ES");

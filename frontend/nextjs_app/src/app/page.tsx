@@ -30,7 +30,7 @@ export default function HomePage() {
           onClick={handleSeleccionManual}
           className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
         >
-          🎯 Seleccionar Ejercicio Manualmente
+          🎯 Iniciar ejercicio
         </button>
       </div>
     </main>

@@ -2,14 +2,14 @@
 // Helpers
 /////////////////////
 
-const TIPO_ENTRADA = {
-  CAMERA: "camera",
-  VIDEO: "video"
-} as const;
+enum TipoEntradaEnum {
+  CAMERA = "camera",
+  VIDEO = "video"
+} 
 
 
 /////////////////////
 // Public Interface
 /////////////////////
 
-export { TIPO_ENTRADA }
+export { TipoEntradaEnum }
