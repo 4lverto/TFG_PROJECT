@@ -3,7 +3,13 @@ import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
 
 interface BaseEjercicioManualRepository {
   
-  iniciarEjercicioManual(tipo: TipoEntradaEnum, ejercicio: string, fuente?: string, lado?: "derecho" | "izquierdo"): Promise<string>
+  iniciarEjercicioManual(tipo: TipoEntradaEnum,
+    ejercicio: string,
+    fuente?: string, 
+    lado?: "derecho" | "izquierdo",
+    normalizar?: "horizontal" | "vertical" | "auto",
+    forzar_grados_rotacion?: 0 | 90 | 180 | 270,
+    indice_camara?: number): Promise<string>
 
   obtenerRepeticionesEjercicioManual(): Promise<number>;
 

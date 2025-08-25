@@ -31,11 +31,13 @@ const EjerciciosRegistrados: Ejercicio[] = [
     id: "sentadilla",
     nombre: "Sentadilla",
     descripcion: "Ejercicio de piernas que trabaja cuádriceps y glúteos.",
+    usaLado: true,
   },
   {
     id: "flexion",
     nombre: "Flexión de Pecho",
     descripcion: "Trabajo de pecho, tríceps y core.",
+    usaLado: true,
   },
   {
     id: "press_militar",
@@ -53,11 +55,13 @@ const EjerciciosRegistrados: Ejercicio[] = [
     id: "crunch_abdominal",
     nombre: "Crunch Abdominal",
     descripcion: "Trabajo de abdominal con las rodillas flexionadas",
+    usaLado: true,
   },
   {
     id: "dip_tricep",
     nombre: "Dips de Tricep",
-    descripcion: "Trabajo de tricep realizable de muy variadas maneras"
+    descripcion: "Trabajo de tricep realizable de muy variadas maneras",
+    usaLado: true,
   },
   {
     id: "elevacion_lateral",

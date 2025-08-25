@@ -1,6 +1,8 @@
 # -------------------------------
 # Requierements
 # -------------------------------
+import cv2
+
 from fastapi import APIRouter, Query
 from pathlib import Path
 from pydantic import BaseModel
@@ -8,6 +10,10 @@ from typing import Optional, List
 
 from trackerfit.utils.ejercicio_enum import EjercicioId
 from trackerfit.utils.tipo_entrada_enum import TipoEntrada
+from trackerfit.utils.rotacion import (
+    Normalizar, GradosRotacion
+)
+
 from app.utils.video_paths import listar_videos_por_ejercicio
 from inputs.sesion.session_controller import (
     iniciar_sesion,
@@ -31,11 +37,21 @@ class IniciarSesionRequest(BaseModel):
     nombre_ejercicio: EjercicioId
     fuente: Optional[str] = None
     lado: Optional[str] = "derecho"
+    normalizar: Optional[Normalizar] = "auto"
+    forzar_grados_rotacion: Optional[GradosRotacion] = 0
+    indice_camara: Optional[int] = 0
 
 @router.post("/iniciar-ejercicio")
 async def iniciar_ejercicio(request: IniciarSesionRequest):
     global ejercicio_actual
 
+    try:
+        from inputs.sesion.session_controller import sesion_activa as _activa, detener_sesion as _detener
+        if _activa():
+            _detener
+    except Exception:
+        pass
+    
     if sesion_activa():
         return {"error": "Ya hay un ejercicio en curso"}
 
@@ -53,10 +69,13 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
             fuente_abs = str(p)
 
         iniciar_sesion(
-            tipo=request.tipo,  # pasa el enum, el controller ya hace pass-through al SessionManager
+            tipo=request.tipo,
             nombre_ejercicio=request.nombre_ejercicio,
-            fuente=fuente_abs,  # <-- usa la ruta ABSOLUTA correcta
+            fuente=fuente_abs, 
             lado=request.lado,
+            normalizar=request.normalizar,
+            forzar_grados_rotacion=request.forzar_grados_rotacion or 0,
+            indice_camara=request.indice_camara or 0,
         )
     except Exception as e:
         return {"error": str(e)}
@@ -81,12 +100,14 @@ async def finalizar_ejercicio():
     if not ejercicio_actual:
         return {"error": "No hay ejercicio en curso"}
 
-    repeticiones_finales = obtener_repeticiones()
-    detener_sesion()
-    resumen = generar_resumen(reps=repeticiones_finales)
+    try:
+        repeticiones_finales = obtener_repeticiones()
+        detener_sesion()
+        resumen = generar_resumen(reps=repeticiones_finales)
+        historial_ejercicios.append(resumen) 
+    finally:
+        ejercicio_actual = None
     
-    historial_ejercicios.append(resumen)
-    ejercicio_actual = None
     return {"mensaje": f"Actividad finalizada con éxito.", "resumen": resumen}
 
 @router.get("/historial")
@@ -97,3 +118,26 @@ async def ver_historial():
 async def listar_videos_disponibles(ejercicio: EjercicioId = Query(...)):
     videos = listar_videos_por_ejercicio(ejercicio.value)
     return {"videos": videos}
+
+@router.get("/camaras-disponibles")
+async def camaras_disponibles():
+    """
+    Devuelve la lista de cámaras disponibles en el host donde se encuentra el backend
+    """
+    try:
+        from pygrabber.dshow_graph import FilterGraph
+        names = FilterGraph().get_input_devices()
+        devices = [{"index": i, "label":names[i]} for i in range(len(names))]
+        
+        return {"devices": devices}
+    except Exception:
+        pass
+    
+    # Si no encontramos dispositivos, se devuelve el resultado genérico:
+    dispositivos_encontrados = []
+    for i in range(4):
+        cap = cv2.VideoCapture(i)
+        if cap is not None and cap.isOpened():
+            dispositivos_encontrados({"index":i, "label": f"Camara {i}"})
+            cap.release()
+    return {"devices": dispositivos_encontrados}

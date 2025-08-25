@@ -21,11 +21,19 @@ function EjercicioManual() {
     repeticiones,
     resumen,
     lado,
+    normalizar,
+    forzarRotacion,
+    indiceCamara,
+    camaras,
     // handlers
     setEjercicioSeleccionado,
     setVideoSeleccionado,
     setResumen,
     setLado,
+    setNormalizar,
+    setForzarRotacion,
+    setIndiceCamara,
+    setCamaras,
     handleTipoEntradaChange,
     handleIniciarEjercicio,
     handleFinalizar,
@@ -45,6 +53,7 @@ function EjercicioManual() {
             🔢 Repeticiones: {repeticiones}
           </p>
           <button
+            disabled={!ejercicioActivo}
             onClick={handleFinalizar}
             className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
           >
@@ -114,8 +123,61 @@ function EjercicioManual() {
                 </select>
               </>
             )}
+            <div className="border rounded-lg p-3 space-y-3 bg-white">
+              <p className="font-semibold">⚙️ Opciones avanzadas (rotación)</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-sm font-medium">Orientación</label>
+                  <select
+                    value={normalizar}
+                    onChange={(e) => setNormalizar(e.target.value as "auto" | "horizontal" | "vertical")}
+                    className="p-2 rounded border border-gray-300 w-full"
+                  >
+                    <option value="auto">Auto</option>
+                    <option value="horizontal">Horizontal</option>
+                    <option value="vertical">Vertical</option>
+                  </select>
+                </div>
 
+                <div>
+                  <label className="block text-sm font-medium">Rotación forzada</label>
+                  <select
+                    value={forzarRotacion}
+                    onChange={(e) => setForzarRotacion(Number(e.target.value) as 0 | 90 | 180 | 270)}
+                    className="p-2 rounded border border-gray-300 w-full"
+                  >
+                    <option value={0}>0°</option>
+                    <option value={90}>90°</option>
+                    <option value={180}>180°</option>
+                    <option value={270}>270°</option>
+                  </select>
+                </div>
+
+                {tipoEntrada === "camera" && camaras.length > 1 && (
+                  <div>
+                    <label className="block text-sm font-medium">Cámara</label>
+                    <select
+                      value={indiceCamara}
+                      onChange={(e) => setIndiceCamara(Number(e.target.value))}
+                      className="p-2 rounded border border-gray-300 w-full"
+                    >
+                      {camaras.map((c) => (
+                        <option key={c.index} value={c.index}>{c.label ?? `Cámara ${c.index}`}</option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Si no ves más opciones, sólo hay una cámara disponible (la integrada).
+                    </p>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-gray-500">
+                Consejo: deja <b>Auto</b> salvo que el vídeo/cámara se vea girado. Para cámara, se recomienda
+                usar <b>Horizontal</b>.
+              </p>
+            </div>
             <button
+              disabled={ejercicioActivo}
               onClick={handleIniciarEjercicio}
               className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 mt-4"
             >

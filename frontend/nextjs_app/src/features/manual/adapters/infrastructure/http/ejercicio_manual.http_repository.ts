@@ -13,19 +13,32 @@ import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
 /////////////////////
 
 class EjercicioManualHttpRepository implements BaseEjercicioManualRepository {
-    async iniciarEjercicioManual(tipo: TipoEntradaEnum, ejercicio: string, fuente?: string, lado?: "derecho" | "izquierdo"): Promise<string> {
+    async iniciarEjercicioManual(
+        tipo: TipoEntradaEnum,
+        ejercicio: string,
+        fuente?: string,
+        lado: "derecho" | "izquierdo" = "derecho",
+        normalizar: "horizontal" | "vertical" | "auto" = "auto",
+        forzar_grados_rotacion: 0 | 90 | 180 | 270 = 0,
+        indice_camara: number = 0,
+    ): Promise<string> {
         const body: IniciarSesionEntity = {
             tipo: tipo,
             nombre_ejercicio: ejercicio,
-            lado: lado ?? "derecho",
+            ...(tipo === TipoEntradaEnum.VIDEO && fuente ? { fuente } : {}),
+            lado,
+            normalizar,
+            forzar_grados_rotacion,
+            indice_camara,
         };
-
-        if (tipo === TipoEntradaEnum.VIDEO && fuente) {
-            body.fuente = fuente;
+        
+        const respuesta =  await httpPost<{mensaje?: string; error?: string}>("/iniciar-ejercicio",body);
+        
+        if(respuesta?.error){
+            throw new Error(respuesta.error);
         }
 
-        const mensaje = httpPost<string>("/iniciar-ejercicio", body);
-        return mensaje;
+        return respuesta.mensaje ?? "Sesion iniciada";
     }
 
     async obtenerRepeticionesEjercicioManual(): Promise<number> {

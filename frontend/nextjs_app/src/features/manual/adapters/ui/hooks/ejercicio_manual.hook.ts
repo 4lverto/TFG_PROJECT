@@ -7,6 +7,7 @@ import { iniciarSesionEjercicioManualUseCase } from "../../infrastructure/di/use
 import { finalizarEjercicioManualUseCase } from "../../infrastructure/di/use_cases/finalizar_ejercicio_manual.use_case.di";
 import { obtenerRepeticionesEjercicioManualUseCase } from "../../infrastructure/di/use_cases/obtener_ejercicio_manual.use_case.di";
 import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
+import { CamaraInfo, getCamarasDisponibles } from "@/shared/adapters/infrastructure/http/camaras.api";
 
 type TipoEntradaStr = "camera" | "video";
 
@@ -24,6 +25,12 @@ function useManualScreen() {
   const [repeticiones, setRepeticiones] = useState(0);
   const [resumen, setResumen] = useState<ResumenSesion | null>(null);
 
+  // Orientación de la cámara
+  const [camaras, setCamaras] = useState<CamaraInfo[]>([]);
+  const [normalizar, setNormalizar] = useState<"auto" | "horizontal" | "vertical">("auto");
+  const [forzarRotacion, setForzarRotacion] = useState<0 | 90 | 180 | 270>(0);
+  const [indiceCamara, setIndiceCamara] = useState<number>(0);
+
   // Refs para limpieza de efectos
   const pollRef = useRef<NodeJS.Timeout | null>(null);
   const abortVideosRef = useRef<AbortController | null>(null);
@@ -34,7 +41,14 @@ function useManualScreen() {
   );
 
   const handleTipoEntradaChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setTipoEntrada(e.target.value as TipoEntradaStr);
+    const value = e.target.value as TipoEntradaStr;
+
+    setTipoEntrada(value);
+
+    setNormalizar(value === "camera" ? "horizontal" : "auto");
+
+    if (value === "camera") setVideoSeleccionado("");
+
   };
 
   const handleIniciarEjercicio = async () => {
@@ -49,7 +63,10 @@ function useManualScreen() {
         tipo,
         ejercicioSeleccionado.trim(),
         tipo === TipoEntradaEnum.VIDEO ? videoSeleccionado : undefined,
-        lado
+        lado,
+        normalizar,
+        forzarRotacion,
+        indiceCamara,
       );
 
       setEjercicioActivo(true);
@@ -63,10 +80,11 @@ function useManualScreen() {
 
   const handleFinalizar = async () => {
     try {
+      setMensaje("Finalizando...");
       const response = await finalizarEjercicioManualUseCase.execute();
+      setEjercicioActivo(false);
       setResumen(response.resumen);
       setMensaje(response.mensaje);
-      setEjercicioActivo(false);
     } catch (error) {
       console.error(error);
       setMensaje("❌ Error al finalizar el ejercicio");
@@ -128,6 +146,23 @@ function useManualScreen() {
     };
   }, [ejercicioActivo]);
 
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      if (tipoEntrada === "camera") {
+        const list = await getCamarasDisponibles();
+        if (!mounted) return;
+        setCamaras(list);
+        // Si hay exactamente 1, usarla y ocultar el selector en UI (con list.length <= 1)
+        setIndiceCamara(list.length > 0 ? list[0].index : 0);
+      } else {
+        setCamaras([]);
+        setIndiceCamara(0);
+      }
+    }
+    load();
+    return () => { mounted = false; };
+  }, [tipoEntrada]);
   return {
     // estado
     tipoEntrada,
@@ -140,15 +175,23 @@ function useManualScreen() {
     resumen,
     lado,
     selectedExercise,
+    normalizar,
+    forzarRotacion,
+    indiceCamara,
+    camaras,
 
     // setters/handlers
+    handleTipoEntradaChange,
+    handleIniciarEjercicio,
+    handleFinalizar,
     setEjercicioSeleccionado,
     setVideoSeleccionado,
     setResumen,
     setLado,
-    handleTipoEntradaChange,
-    handleIniciarEjercicio,
-    handleFinalizar,
+    setNormalizar,
+    setForzarRotacion,
+    setIndiceCamara,
+    setCamaras,
   };
 }
 
