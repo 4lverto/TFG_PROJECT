@@ -1,6 +1,13 @@
-import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
-import { BaseEjercicioManualRepository } from "../domain/ports/ejercicio_manual.repository";
+/////////////////////
+// Requirements
+/////////////////////
 
+import { BaseEjercicioManualRepository } from "../domain/ports/ejercicio_manual.repository";
+import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
+
+/////////////////////
+// Helpers
+/////////////////////
 
 class FinalizarEjercicioManualUseCase {
     constructor(private repo: BaseEjercicioManualRepository) { }
@@ -12,5 +19,9 @@ class FinalizarEjercicioManualUseCase {
         return this.repo.finalizarEjercicioManual();
     }
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { FinalizarEjercicioManualUseCase };

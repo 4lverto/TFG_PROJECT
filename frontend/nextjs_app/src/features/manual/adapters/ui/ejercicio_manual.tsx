@@ -4,10 +4,15 @@
 /////////////////////
 
 import React from "react";
-import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
+
 import { ResumenDeSesion } from "./components/ResumenDeSesion";
 import { useManualScreen } from "./hooks/ejercicio_manual.hook";
 import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
+import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
+
+/////////////////////
+// Helpers
+/////////////////////
 
 function EjercicioManual() {
 
@@ -34,7 +39,6 @@ function EjercicioManual() {
     setNormalizar,
     setForzarRotacion,
     setIndiceCamara,
-    setCamaras,
     handleTipoEntradaChange,
     handleIniciarEjercicio,
     handleFinalizar,
@@ -44,15 +48,15 @@ function EjercicioManual() {
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
 
       {resumen ? (
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
           🎯 Resumen de la sesión de ejercicio
         </h1>
       ) : ejercicioActivo ? (
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
           🎯 Monitorización de la sesión de ejercicio
         </h1>
       ) : (
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
           🎯 Configuración de la sesión de ejercicio
         </h1>
       )}
@@ -65,13 +69,14 @@ function EjercicioManual() {
             🔢 Repeticiones: {repeticiones}
           </p>
 
-          <p className="text-md font-semibold m-4">
+          <p className="text-md font-semibold m-4 text-center">
             ⚠️Mantente estable dentro del objetivo del dispositivo para evitar contabilizar repeticiones errónesas⚠️</p>
 
           <button
             disabled={!ejercicioActivo}
+            aria-disabled={!ejercicioActivo}
             onClick={handleFinalizar}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
+            className="bg-red-600 cursor-pointer hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
           >
             🛑 Finalizar Ejercicio
           </button>
@@ -198,7 +203,7 @@ function EjercicioManual() {
             <button
               disabled={ejercicioActivo}
               onClick={handleIniciarEjercicio}
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 mt-4"
+              className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 mt-4"
             >
               💪 Iniciar ejercicio
             </button>

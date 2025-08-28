@@ -5,6 +5,7 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.routes.api import router
 
 # -------------------------------
@@ -13,9 +14,10 @@ from app.routes.api import router
 
 app = FastAPI(
     title="TFG Visión Artificial API",
-    description="API para gestionar ejercicios físicos con MediaPipe",
+    description="API para gestionar ejercicios físicos con Trackerfit",
     version="1.0.0"
 )
+
 
 app.add_middleware(
     CORSMiddleware,

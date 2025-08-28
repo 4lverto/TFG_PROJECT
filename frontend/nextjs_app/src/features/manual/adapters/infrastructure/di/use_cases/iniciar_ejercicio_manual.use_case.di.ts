@@ -9,10 +9,10 @@ import { IniciarEjercicioManualUseCase } from "@/features/manual/core/applicatio
 // Helpers
 /////////////////////
 
-const iniciarSesionEjercicioManualUseCase: IniciarEjercicioManualUseCase = new IniciarEjercicioManualUseCase(ejercicioManualHTTPRepository);
+const iniciarEjercicioManualUseCase: IniciarEjercicioManualUseCase = new IniciarEjercicioManualUseCase(ejercicioManualHTTPRepository);
 
 /////////////////////
 // Public Interface
 /////////////////////
 
-export { iniciarSesionEjercicioManualUseCase } ;
+export { iniciarEjercicioManualUseCase } ;

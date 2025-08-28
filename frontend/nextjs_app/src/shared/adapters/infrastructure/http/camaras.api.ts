@@ -1,5 +1,12 @@
-// src/shared/adapters/infrastructure/http/camaras.api.ts
+/////////////////////
+// Requirements
+/////////////////////
+
 import { httpGet } from "@/shared/adapters/infrastructure/http/httpClient";
+
+/////////////////////
+// Helpers
+/////////////////////
 
 interface CamaraInfo {
     index: number;
@@ -9,8 +16,9 @@ interface CamaraInfo {
 async function getCamarasDisponibles(): Promise<CamaraInfo[]> {
     try {
         const resp = await httpGet<{ devices: CamaraInfo[] }>("/camaras-disponibles");
-        return resp.devices ?? [];
-    } catch {
+        return resp?.devices ?? [];
+    } catch (e) {
+        console.debug("error en getCamarasDisponibles: e");
         return [];
     }
 }

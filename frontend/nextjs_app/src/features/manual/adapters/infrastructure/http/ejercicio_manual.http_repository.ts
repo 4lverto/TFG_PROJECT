@@ -31,31 +31,42 @@ class EjercicioManualHttpRepository implements BaseEjercicioManualRepository {
             forzar_grados_rotacion,
             indice_camara,
         };
-        
-        const respuesta =  await httpPost<{mensaje?: string; error?: string}>("/iniciar-ejercicio",body);
-        
-        if(respuesta?.error){
+
+        const respuesta = await httpPost<{ mensaje?: string; error?: string } | null>("/iniciar-ejercicio", body);
+
+        if (!respuesta) return "Sesion iniciada";
+
+        if (respuesta?.error) {
             throw new Error(respuesta.error);
         }
 
-        return respuesta.mensaje ?? "Sesion iniciada";
+        return respuesta?.mensaje ?? "Sesion iniciada";
     }
 
     async obtenerRepeticionesEjercicioManual(): Promise<number> {
-        const {repeticiones} = await httpGet<{repeticiones: number}>("/estado-ejercicio");
-        return repeticiones;
+        const data = await httpGet<{ repeticiones?: Number; mensaje?: string }>("/estado-ejercicio");
+
+        if (typeof data?.repeticiones === "number") return data.repeticiones;
+
+        return 0;
     }
 
     async finalizarEjercicioManual(): Promise<{ mensaje: string; resumen: ResumenSesion; }> {
-        return httpPost<{ mensaje: string; resumen: ResumenSesion }>("/finalizar-ejercicio");
 
+        const respuesta = await httpPost<{ mensaje?: string; resumen?: ResumenSesion; error?: string } | null>("/finalizar-ejercicio");
+
+        if (!respuesta) throw new Error("Respuesta vacía del backend");
+        if (respuesta.error) throw new Error(respuesta.error);
+        if (!respuesta.resumen) throw new Error("No se recibió el resumen de la sesión");
+
+        return { mensaje: respuesta.mensaje ?? "Ejercicio finalizado", resumen: respuesta.resumen };
     }
 
-    async listarVideosEjercicioManual(ejercicio: string) {
-        const data = await httpGet<{ videos: string[] }>(
+    async listarVideosEjercicioManual(ejercicio: string): Promise<string[]> {
+        const data = await httpGet<{ videos?: string[] }>(
             `/videos-disponibles?ejercicio=${ejercicio}`
         );
-        return data.videos;
+        return data?.videos ?? [];
     }
 };
 

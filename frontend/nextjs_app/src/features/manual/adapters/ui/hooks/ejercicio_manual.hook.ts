@@ -3,11 +3,12 @@
 import { useEffect, useMemo, useRef, useState, ChangeEvent } from "react";
 import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
 import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
-import { iniciarSesionEjercicioManualUseCase } from "../../infrastructure/di/use_cases/iniciar_ejercicio_manual.use_case.di";
+import { iniciarEjercicioManualUseCase } from "../../infrastructure/di/use_cases/iniciar_ejercicio_manual.use_case.di";
 import { finalizarEjercicioManualUseCase } from "../../infrastructure/di/use_cases/finalizar_ejercicio_manual.use_case.di";
-import { obtenerRepeticionesEjercicioManualUseCase } from "../../infrastructure/di/use_cases/obtener_ejercicio_manual.use_case.di";
+import { obtenerRepeticionesEjercicioManualUseCase } from "../../infrastructure/di/use_cases/obtener_repeticiones_ejercicio_manual.use_case.di";
 import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 import { CamaraInfo, getCamarasDisponibles } from "@/shared/adapters/infrastructure/http/camaras.api";
+import { BACKEND_URL } from "@/shared/core/domain/constants/constantes";
 
 function useManualScreen() {
   // Estado UI
@@ -30,7 +31,7 @@ function useManualScreen() {
   const [indiceCamara, setIndiceCamara] = useState<number>(0);
 
   // Refs para limpieza de efectos
-  const pollRef = useRef<NodeJS.Timeout | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const abortVideosRef = useRef<AbortController | null>(null);
 
   const selectedExercise = useMemo(
@@ -57,7 +58,7 @@ function useManualScreen() {
       const tipo =
         tipoEntrada === TipoEntradaEnum.CAMERA ? TipoEntradaEnum.CAMERA : TipoEntradaEnum.VIDEO;
 
-      await iniciarSesionEjercicioManualUseCase.execute(
+      await iniciarEjercicioManualUseCase.execute(
         tipo,
         ejercicioSeleccionado.trim(),
         tipo === TipoEntradaEnum.VIDEO ? videoSeleccionado : undefined,
@@ -81,11 +82,11 @@ function useManualScreen() {
       setMensaje("Finalizando...");
       const response = await finalizarEjercicioManualUseCase.execute();
       setEjercicioActivo(false);
-      setResumen(response.resumen);
-      setMensaje(response.mensaje);
-    } catch (error) {
+      setResumen(response?.resumen ?? null);
+      setMensaje(response?.mensaje ?? "Sesión finalizada");
+    } catch (error: any) {
       console.error(error);
-      setMensaje("❌ Error al finalizar el ejercicio");
+      setMensaje(`❌ Error al finalizar el ejercicio${error?.message ? `: ${error.message}` : ""}`);
     }
   };
 
@@ -104,9 +105,10 @@ function useManualScreen() {
 
     (async () => {
       try {
-        const url = `http://localhost:8000/videos-disponibles?ejercicio=${encodeURIComponent(
+        const url = `${BACKEND_URL}/videos-disponibles?ejercicio=${encodeURIComponent(
           ejercicioSeleccionado
         )}`;
+
         const res = await fetch(url, { signal: controller.signal });
         const data = await res.json();
         const lista: string[] = Array.isArray(data?.videos) ? data.videos : [];
@@ -172,7 +174,6 @@ function useManualScreen() {
     repeticiones,
     resumen,
     lado,
-    selectedExercise,
     normalizar,
     forzarRotacion,
     indiceCamara,

@@ -16,9 +16,14 @@ interface GraficaAnguloProps {
 }
 
 function GraficaAngulo({ datos }: GraficaAnguloProps) {
+
+  if(!datos?.length) return null;
+
   // Formateamos los datos para mostrar tiempo relativo (en segundos) y ángulo
+  const t0 = datos[0].timestamp;
+
   const data = datos.map((frame) => ({
-    tiempo: ((frame.timestamp - datos[0].timestamp)).toFixed(2), // segundos relativos
+    tiempo: parseFloat(((frame.timestamp - t0)).toFixed(2)), // segundos
     angulo: frame.angulo ?? null,
   }));
 

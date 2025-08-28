@@ -1,9 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/////////////////////
+// Requirements
+/////////////////////
+
 import React from "react";
+import jsPDF from "jspdf";
+import { GraficaAngulo } from "@/features/manual/adapters/ui/components/GraficaAngulo";
 import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
-import { GraficaAngulo } from "@/features/manual/adapters/ui/components/GraficaAngulo";
-import jsPDF from "jspdf";
 import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
 
 
@@ -159,13 +162,14 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
       .map((fila) => fila.map(valor => `"${normalizarTexto(valor)}"`).join(","))
       .join("\n");
 
-    const blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob(["\uFEFF", contenido], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
 
     link.setAttribute("href", url);
     link.setAttribute("download", `resumen_${resumen.ejercicio}_${fecha.replace(/\//g, "-")}.csv`);
     link.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleExportarCSVDetallado = () => {
@@ -183,13 +187,14 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
       .map((fila) => fila.map((valor) => `"${valor}"`).join(","))
       .join("\n");
 
-    const blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob(["\uFEFF", contenido], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
 
     link.setAttribute("href", url);
     link.setAttribute("download", `detalle_sesion_${resumen.ejercicio}.csv`);
     link.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -210,21 +215,21 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
 
       <button
         onClick={handleExportarPDF}
-        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         📄 Exportar como PDF
       </button>
 
       <button
         onClick={handleExportarCSV}
-        className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-yellow-600 cursor-pointer hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         📄 Exportar como CSV
       </button>
 
       <button
         onClick={handleExportarCSVDetallado}
-        className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-purple-600 cursor-pointer hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         📈 Exportar datos detallados (CSV)
       </button>
@@ -235,7 +240,7 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
 
       <button
         onClick={onVolver}
-        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         🔙 Volver a Selección
       </button>

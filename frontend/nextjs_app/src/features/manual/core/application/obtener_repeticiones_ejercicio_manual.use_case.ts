@@ -1,5 +1,12 @@
+/////////////////////
+// Requirements
+/////////////////////
+
 import { BaseEjercicioManualRepository } from "../domain/ports/ejercicio_manual.repository";
 
+/////////////////////
+// Helpers
+/////////////////////
 
 class ObtenerRepeticionesEjercicioManualUseCase {
     constructor(private repo: BaseEjercicioManualRepository) { }
@@ -8,5 +15,9 @@ class ObtenerRepeticionesEjercicioManualUseCase {
         return await this.repo.obtenerRepeticionesEjercicioManual();
     }
 }
+
+/////////////////////
+// Public Interface
+/////////////////////
 
 export { ObtenerRepeticionesEjercicioManualUseCase };

@@ -17,7 +17,7 @@ interface Ejercicio {
   id: EjercicioId;
   nombre: string;
   descripcion?: string;
-  usaLado?: true;
+  usaLado?: boolean;
 }
 
 const EjerciciosRegistrados: Ejercicio[] = [
