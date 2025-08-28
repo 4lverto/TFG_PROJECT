@@ -9,11 +9,9 @@ import { obtenerRepeticionesEjercicioManualUseCase } from "../../infrastructure/
 import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 import { CamaraInfo, getCamarasDisponibles } from "@/shared/adapters/infrastructure/http/camaras.api";
 
-type TipoEntradaStr = "camera" | "video";
-
 function useManualScreen() {
   // Estado UI
-  const [tipoEntrada, setTipoEntrada] = useState<TipoEntradaStr>("camera");
+  const [tipoEntrada, setTipoEntrada] = useState<TipoEntradaEnum>(TipoEntradaEnum.CAMERA);
   const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState<string>("curl_bicep");
   const [videosDisponibles, setVideosDisponibles] = useState<string[]>([]);
   const [videoSeleccionado, setVideoSeleccionado] = useState<string>("");
@@ -41,13 +39,13 @@ function useManualScreen() {
   );
 
   const handleTipoEntradaChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as TipoEntradaStr;
+    const value = e.target.value as TipoEntradaEnum;
 
     setTipoEntrada(value);
 
-    setNormalizar(value === "camera" ? "horizontal" : "auto");
+    setNormalizar(value === TipoEntradaEnum.CAMERA ? "horizontal" : "auto");
 
-    if (value === "camera") setVideoSeleccionado("");
+    if (value === TipoEntradaEnum.CAMERA) setVideoSeleccionado("");
 
   };
 
@@ -57,7 +55,7 @@ function useManualScreen() {
       setMensaje("⏳ Iniciando sesión...");
 
       const tipo =
-        tipoEntrada === "camera" ? TipoEntradaEnum.CAMERA : TipoEntradaEnum.VIDEO;
+        tipoEntrada === TipoEntradaEnum.CAMERA ? TipoEntradaEnum.CAMERA : TipoEntradaEnum.VIDEO;
 
       await iniciarSesionEjercicioManualUseCase.execute(
         tipo,
@@ -93,7 +91,7 @@ function useManualScreen() {
 
   // Carga de vídeos cuando cambia ejercicio o tipoEntrada=VIDEO
   useEffect(() => {
-    if (tipoEntrada !== "video") {
+    if (tipoEntrada !== TipoEntradaEnum.VIDEO) {
       setVideosDisponibles([]);
       setVideoSeleccionado("");
       abortVideosRef.current?.abort();
@@ -149,7 +147,7 @@ function useManualScreen() {
   useEffect(() => {
     let mounted = true;
     async function load() {
-      if (tipoEntrada === "camera") {
+      if (tipoEntrada === TipoEntradaEnum.CAMERA) {
         const list = await getCamarasDisponibles();
         if (!mounted) return;
         setCamaras(list);

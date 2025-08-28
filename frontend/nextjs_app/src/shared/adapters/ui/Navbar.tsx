@@ -18,10 +18,6 @@ function Navbar() {
           🏠 Inicio
         </span>
       </Link>
-
-      <div className="text-md">
-        <Link href="/manual" className="font-bold hover:text-blue-400 transition">🏋Iniciar ejercicio</Link>
-      </div>
     </nav>
   );
 }

@@ -4,6 +4,7 @@ import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 import { ResumenSesion } from "@/shared/core/domain/resumen_sesion.entity";
 import { GraficaAngulo } from "@/features/manual/adapters/ui/components/GraficaAngulo";
 import jsPDF from "jspdf";
+import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
 
 
 /////////////////////
@@ -15,11 +16,11 @@ interface Props {
   onVolver: () => void;
 }
 
-export default function ResumenDeSesion({ resumen, onVolver }: Props) {
+function ResumenDeSesion({ resumen, onVolver }: Props) {
   const nombreEjercicio =
     EjerciciosRegistrados.find((e) => e.id === resumen.ejercicio)?.nombre || resumen.ejercicio;
 
-  const tipoEntradaLegible = resumen.tipo_entrada === "camera" ? "Cámara" : "Vídeo";
+  const tipoEntradaLegible = resumen.tipo_entrada === TipoEntradaEnum.CAMERA ? "Cámara" : "Vídeo";
   const fecha = new Date(resumen.inicio).toLocaleDateString("es-ES");
   const horaInicio = new Date(resumen.inicio).toLocaleTimeString("es-ES");
   const horaFin = new Date(resumen.fin).toLocaleTimeString("es-ES");
@@ -152,8 +153,10 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
       duracion,
     ];
 
+    const normalizarTexto = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
     const contenido = [encabezados, fila]
-      .map((fila) => fila.map(valor => `"${valor}"`).join(","))
+      .map((fila) => fila.map(valor => `"${normalizarTexto(valor)}"`).join(","))
       .join("\n");
 
     const blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
@@ -244,3 +247,5 @@ export default function ResumenDeSesion({ resumen, onVolver }: Props) {
 /////////////////////
 // Public Interface
 /////////////////////
+
+export { ResumenDeSesion }

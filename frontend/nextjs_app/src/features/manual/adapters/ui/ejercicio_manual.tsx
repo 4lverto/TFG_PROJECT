@@ -5,8 +5,9 @@
 
 import React from "react";
 import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
-import ResumenDeSesion from "./components/ResumenDeSesion";
+import { ResumenDeSesion } from "./components/ResumenDeSesion";
 import { useManualScreen } from "./hooks/ejercicio_manual.hook";
+import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
 
 function EjercicioManual() {
 
@@ -41,9 +42,20 @@ function EjercicioManual() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">
-        🎯 Modo Selección Manual
-      </h1>
+
+      {resumen ? (
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+          🎯 Resumen de la sesión de ejercicio
+        </h1>
+      ) : ejercicioActivo ? (
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+          🎯 Monitorización de la sesión de ejercicio
+        </h1>
+      ) : (
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
+          🎯 Configuración de la sesión de ejercicio
+        </h1>
+      )}
 
       {resumen ? (
         <ResumenDeSesion resumen={resumen} onVolver={() => setResumen(null)} />
@@ -52,6 +64,10 @@ function EjercicioManual() {
           <p className="text-xl font-semibold mb-4">
             🔢 Repeticiones: {repeticiones}
           </p>
+
+          <p className="text-md font-semibold m-4">
+            ⚠️Mantente estable dentro del objetivo del dispositivo para evitar contabilizar repeticiones errónesas⚠️</p>
+
           <button
             disabled={!ejercicioActivo}
             onClick={handleFinalizar}
@@ -64,19 +80,19 @@ function EjercicioManual() {
         <>
           <div className="flex flex-col gap-4 mb-6 w-full max-w-sm">
             <label className="text-lg font-semibold text-gray-700">
-              Tipo de entrada:
+              Tipo de entrada de vídeo:
             </label>
             <select
               value={tipoEntrada}
               onChange={handleTipoEntradaChange}
               className="p-2 rounded border border-gray-300"
             >
-              <option value="camera">📷 Cámara</option>
-              <option value="video">🎥 Vídeo</option>
+              <option value={TipoEntradaEnum.CAMERA}>📷 Cámara en directo</option>
+              <option value={TipoEntradaEnum.VIDEO}>🎥 Vídeo pregrabado</option>
             </select>
 
             <label className="text-lg font-semibold text-gray-700">
-              Ejercicio:
+              ¿Qué ejercicio vas a realizar?:
             </label>
             <select
               value={ejercicioSeleccionado}
@@ -93,22 +109,25 @@ function EjercicioManual() {
             {EjerciciosRegistrados.find((ej) => ej.id === ejercicioSeleccionado)?.usaLado && (
               <>
                 <label className="text-lg font-semibold text-gray-700"> ¿Con qué lado del cuerpo trabajarás? </label>
-                <select
-                  value={lado}
-                  onChange={(e) => setLado(e.target.value as "derecho" | "izquierdo")}
-                  className="p-2 rounded border border-gray-300"
-                >
-                  <option value="derecho">Derecho</option>
-                  <option value="izquierdo">Izquierdo</option>
-                </select>
+                <div className="flex flex-col items-center md:flex-row md:items-start gap-3">
+                  <p className="text-md md:w-2/3"> ¡Si te es indiferente, selecciona aquel que vayas a orientar hacia la cámara!</p>
+                  <select
+                    value={lado}
+                    onChange={(e) => setLado(e.target.value as "derecho" | "izquierdo")}
+                    className="p-2 rounded border border-gray-300 w-full md:w-1/3 h-fit"
+                  >
+                    <option value="derecho">Derecho</option>
+                    <option value="izquierdo">Izquierdo</option>
+                  </select>
+                </div>
 
               </>
             )}
 
-            {tipoEntrada === "video" && (
+            {tipoEntrada === TipoEntradaEnum.VIDEO && (
               <>
                 <label className="text-lg font-semibold text-gray-700">
-                  Selecciona vídeo:
+                  Selecciona el vídeo que quieres procesar:
                 </label>
                 <select
                   value={videoSeleccionado}
@@ -124,16 +143,16 @@ function EjercicioManual() {
               </>
             )}
             <div className="border rounded-lg p-3 space-y-3 bg-white">
-              <p className="font-semibold">⚙️ Opciones avanzadas (rotación)</p>
+              <p className="font-semibold">⚙️ Opciones avanzadas (rotación de la cámara)</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
                   <label className="block text-sm font-medium">Orientación</label>
                   <select
                     value={normalizar}
                     onChange={(e) => setNormalizar(e.target.value as "auto" | "horizontal" | "vertical")}
-                    className="p-2 rounded border border-gray-300 w-full"
+                    className="p-2 mt-2 rounded border border-gray-300 w-full"
                   >
-                    <option value="auto">Auto</option>
+                    <option value="auto">Default</option>
                     <option value="horizontal">Horizontal</option>
                     <option value="vertical">Vertical</option>
                   </select>
@@ -144,22 +163,22 @@ function EjercicioManual() {
                   <select
                     value={forzarRotacion}
                     onChange={(e) => setForzarRotacion(Number(e.target.value) as 0 | 90 | 180 | 270)}
-                    className="p-2 rounded border border-gray-300 w-full"
+                    className="p-2 mt-2 rounded border border-gray-300 w-full"
                   >
-                    <option value={0}>0°</option>
+                    <option value={0}>Default</option>
                     <option value={90}>90°</option>
                     <option value={180}>180°</option>
                     <option value={270}>270°</option>
                   </select>
                 </div>
 
-                {tipoEntrada === "camera" && camaras.length > 1 && (
+                {tipoEntrada === TipoEntradaEnum.CAMERA && camaras.length > 1 && (
                   <div>
                     <label className="block text-sm font-medium">Cámara</label>
                     <select
                       value={indiceCamara}
                       onChange={(e) => setIndiceCamara(Number(e.target.value))}
-                      className="p-2 rounded border border-gray-300 w-full"
+                      className="p-2 mt-2 rounded border border-gray-300 w-full"
                     >
                       {camaras.map((c) => (
                         <option key={c.index} value={c.index}>{c.label ?? `Cámara ${c.index}`}</option>
@@ -172,7 +191,7 @@ function EjercicioManual() {
                 )}
               </div>
               <p className="text-xs text-gray-500">
-                Consejo: deja <b>Auto</b> salvo que el vídeo/cámara se vea girado. Para cámara, se recomienda
+                Consejo: deja <b>Default</b> salvo que el vídeo/cámara se vea girado. Para cámara, se recomienda
                 usar <b>Horizontal</b>.
               </p>
             </div>
@@ -181,7 +200,7 @@ function EjercicioManual() {
               onClick={handleIniciarEjercicio}
               className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 mt-4"
             >
-              💪 Iniciar sesión
+              💪 Iniciar ejercicio
             </button>
           </div>
         </>

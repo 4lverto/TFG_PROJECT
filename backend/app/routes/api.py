@@ -14,6 +14,8 @@ from trackerfit.utils.rotacion import (
     Normalizar, GradosRotacion
 )
 
+from inputs.sesion.session_controller import sesion_activa,detener_sesion
+
 from app.utils.video_paths import listar_videos_por_ejercicio
 from inputs.sesion.session_controller import (
     iniciar_sesion,
@@ -46,14 +48,13 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
     global ejercicio_actual
 
     try:
-        from inputs.sesion.session_controller import sesion_activa as _activa, detener_sesion as _detener
-        if _activa():
-            _detener
+        if sesion_activa():
+            detener_sesion()
     except Exception:
         pass
     
-    if sesion_activa():
-        return {"error": "Ya hay un ejercicio en curso"}
+    # if sesion_activa():
+    #     return {"error": "Ya hay un ejercicio en curso"}
 
     ejercicio_actual = request.nombre_ejercicio.value
 
@@ -108,7 +109,7 @@ async def finalizar_ejercicio():
     finally:
         ejercicio_actual = None
     
-    return {"mensaje": f"Actividad finalizada con éxito.", "resumen": resumen}
+    return {"mensaje": f"Ejercicio finalizado con éxito.", "resumen": resumen}
 
 @router.get("/historial")
 async def ver_historial():

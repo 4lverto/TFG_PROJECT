@@ -25,12 +25,11 @@ export default function HomePage() {
       </h1>
 
       <div className="flex flex-col gap-4 w-full max-w-sm">
-
         <button
           onClick={handleSeleccionManual}
           className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
         >
-          🎯 Iniciar ejercicio
+          🎯 Iniciar sesión de ejercicio
         </button>
       </div>
     </main>
