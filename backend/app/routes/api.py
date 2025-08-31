@@ -69,7 +69,7 @@ async def iniciar_ejercicio(request: IniciarSesionRequest):
         if request.tipo == TipoEntrada.VIDEO and request.fuente:
             p = Path(request.fuente)
             if not p.is_absolute():
-                # parentes[3] apunta a la raíz del proyecto, donde se encuentran los vídeos (/recursos).
+                # parents[3] apunta a la raíz del proyecto, donde se encuentran los vídeos (/recursos).
                 project_root = Path(__file__).resolve().parents[3]
                 p = (project_root / request.fuente).resolve()
             fuente_abs = str(p)

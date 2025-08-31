@@ -6,7 +6,7 @@
 import React from "react";
 
 import { ResumenDeSesion } from "./components/ResumenDeSesion";
-import { useManualScreen } from "./hooks/ejercicio_manual.hook";
+import { useEjercicioManual } from "./hooks/ejercicio_manual.hook";
 import { TipoEntradaEnum } from "@/shared/core/enums/tipo_entrada.enum";
 import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 
@@ -42,7 +42,7 @@ function EjercicioManual() {
     handleTipoEntradaChange,
     handleIniciarEjercicio,
     handleFinalizar,
-  } = useManualScreen();
+  } = useEjercicioManual();
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">

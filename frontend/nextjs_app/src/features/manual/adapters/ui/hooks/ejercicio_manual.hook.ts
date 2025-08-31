@@ -10,7 +10,7 @@ import { EjerciciosRegistrados } from "@/shared/core/domain/ejercicio.entity";
 import { CamaraInfo, getCamarasDisponibles } from "@/shared/adapters/infrastructure/http/camaras.api";
 import { BACKEND_URL } from "@/shared/core/domain/constants/constantes";
 
-function useManualScreen() {
+function useEjercicioManual() {
   // Estado UI
   const [tipoEntrada, setTipoEntrada] = useState<TipoEntradaEnum>(TipoEntradaEnum.CAMERA);
   const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState<string>("curl_bicep");
@@ -146,6 +146,7 @@ function useManualScreen() {
     };
   }, [ejercicioActivo]);
 
+  // Carga las cámaras disponibles cuando hay varias y el tipoEntrada==CAMARA
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -163,6 +164,7 @@ function useManualScreen() {
     load();
     return () => { mounted = false; };
   }, [tipoEntrada]);
+
   return {
     // estado
     tipoEntrada,
@@ -195,4 +197,4 @@ function useManualScreen() {
 }
 
 
-export { useManualScreen };
+export { useEjercicioManual };
