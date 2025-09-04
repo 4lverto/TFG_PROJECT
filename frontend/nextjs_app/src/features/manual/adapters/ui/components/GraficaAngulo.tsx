@@ -28,7 +28,7 @@ function GraficaAngulo({ datos }: GraficaAnguloProps) {
   }));
 
   return (
-    <div className="w-full h-64 bg-white rounded shadow-md p-4 mt-6">
+    <div className="w-full h-[40vh] bg-white rounded shadow-md p-4 mt-6">
       <h3 className="text-4xl font-semibold text-gray-800 mb-2">📈Evolución del ángulo durante la sesión</h3>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart data={data}>

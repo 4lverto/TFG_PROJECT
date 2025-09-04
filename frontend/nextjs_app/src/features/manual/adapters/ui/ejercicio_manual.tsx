@@ -45,7 +45,7 @@ function EjercicioManual() {
   } = useEjercicioManual();
 
   return (
-    <main className="flex flex-col items-center w-full justify-center min-h-screen bg-gray-50 p-6">
+    <main className="flex flex-col items-center w-full justify-center h-fit bg-gray-50 p-6">
 
       {resumen ? (
         <h1 className="text-5xl font-bold mb-6 mt-12 text-center text-gray-800">
