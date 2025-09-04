@@ -198,12 +198,12 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-      <h2 className="text-2xl font-bold text-gray-800">
+    <div className="flex flex-col items-center gap-6 bg-white p-6 rounded-lg shadow-lg max-w-5xl w-full">
+      <h2 className="text-4xl font-bold text-gray-800">
         ✅ Resumen del Ejercicio
       </h2>
 
-      <div className="w-full text-left space-y-2">
+      <div className="w-full text-left space-y-2 text-3xl">
         <p><strong>📅 Fecha:</strong> {fecha}</p>
         <p><strong>🏋️ Ejercicio:</strong> {nombreEjercicio}</p>
         <p><strong>📹 Tipo de entrada:</strong> {tipoEntradaLegible}</p>
@@ -215,21 +215,21 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
 
       <button
         onClick={handleExportarPDF}
-        className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-green-600 cursor-pointer text-3xl hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         📄 Exportar como PDF
       </button>
 
       <button
         onClick={handleExportarCSV}
-        className="bg-yellow-600 cursor-pointer hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-yellow-600 cursor-pointer text-3xl hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         📄 Exportar como CSV
       </button>
 
       <button
         onClick={handleExportarCSVDetallado}
-        className="bg-purple-600 cursor-pointer hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-purple-600 cursor-pointer text-3xl hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         📈 Exportar datos detallados (CSV)
       </button>
@@ -240,7 +240,7 @@ function ResumenDeSesion({ resumen, onVolver }: Props) {
 
       <button
         onClick={onVolver}
-        className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
+        className="bg-blue-600 cursor-pointer text-3xl my-5 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300"
       >
         🔙 Volver a Selección
       </button>

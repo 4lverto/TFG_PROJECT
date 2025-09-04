@@ -19,19 +19,19 @@ export default function HomePage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-10 text-center text-gray-800">
+    <main className="flex flex-col items-center justify-center min-h-screen h-full bg-gray-100 p-6">
+      <h1 className="text-6xl font-bold mb-10 text-center text-gray-800">
         TFG - Visión Artificial y MediaPipe🧠🏋️‍♂️
       </h1>
 
-      <div className="flex flex-col gap-4 w-full max-w-sm">
+
         <button
           onClick={handleSeleccionManual}
-          className="bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
+          className="flex flex-col gap-4 w-full max-w-2xl bg-green-600 cursor-pointer text-2xl hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
         >
           🎯 Iniciar sesión de ejercicio
         </button>
-      </div>
+
     </main>
   );
 }

@@ -10,7 +10,7 @@ import {Navbar} from "./Navbar";
 
 function Header() {
   return (
-    <header className="w-full fixed top-0 bg-gray-900 text-white shadow-md ">
+    <header className="w-full h-20 fixed top-0 bg-gray-900 text-white shadow-md ">
       <Navbar />
     </header>
   );
